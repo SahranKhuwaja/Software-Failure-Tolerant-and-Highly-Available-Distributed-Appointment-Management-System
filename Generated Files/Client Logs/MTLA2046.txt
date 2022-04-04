@@ -20,3 +20,11 @@ Apr 02, 2022 10:27:40 PM DAMS.Clients.WebService.WebServiceClientOperations disp
 INFO: Server Response: Appointment Types displayed
 Apr 02, 2022 10:27:40 PM DAMS.Clients.WebService.WebServiceClientOperations addAppointment
 INFO: Server Response: Appointment Types displayed to be selected for adding an appointment
+Apr 03, 2022 6:43:12 PM DAMS.Clients.WebService.WebServiceClientOperations authenticated
+INFO: Server Response: You are connected to the Montreal (MTL) server!
+Apr 03, 2022 6:43:12 PM DAMS.Clients.WebService.WebServiceClientOperations authenticated
+INFO: Server Response: You are successfully authenticated!
+Apr 03, 2022 6:43:12 PM DAMS.Clients.WebService.WebServiceClientOperations authenticated
+INFO: Logged in as Admin with Admin ID: MTLA2046
+Apr 03, 2022 6:43:12 PM DAMS.Clients.WebService.WebServiceClientOperations adminMenu
+INFO: Menu with list of operations displayed

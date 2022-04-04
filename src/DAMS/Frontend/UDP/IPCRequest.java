@@ -16,17 +16,20 @@ public class IPCRequest {
     DatagramSocket datagramSocket;
     ByteArrayOutputStream byteArrayOutputStream;
     ObjectOutputStream objectOutputStream;
+    final String HOST_IP = "192.168.2.12";
+    final int PORT = 6821;
 
-    public void sendRequestToSequencer(Request request) throws IOException {
+    public static void main(String[] args) throws IOException {
+        Request r = new Request("MTL","MTLA2046", "test");
+        IPCRequest rr = new IPCRequest();
+        rr.sendRequestToSequencer(r);
+    }
+
+    public void sendRequestToSequencer(Request request) {
         try {
             datagramSocket = new DatagramSocket();
-            byteArrayOutputStream = new ByteArrayOutputStream();
-            objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-            objectOutputStream.writeObject(request);
-            objectOutputStream.flush();
-            byte[] message =byteArrayOutputStream.toByteArray();
-            int port = 6801;
-            InetSocketAddress ip = new InetSocketAddress("192.168.2.12",port);
+            byte[] message = this.encodeToByteArray(request);
+            InetSocketAddress ip = new InetSocketAddress(HOST_IP,PORT);
             DatagramPacket requestPacket = new DatagramPacket(message, message.length, ip);
             datagramSocket.send(requestPacket);
 
@@ -37,10 +40,26 @@ public class IPCRequest {
         } finally {
             if (datagramSocket != null) {
                 datagramSocket.close();
+            }
+        }
+    }
+
+    public byte[] encodeToByteArray(Request request) throws IOException {
+        byte[] message = null;
+        try{
+            byteArrayOutputStream = new ByteArrayOutputStream();
+            objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutputStream.writeObject(request);
+            objectOutputStream.flush();
+            message = byteArrayOutputStream.toByteArray();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }finally {
+            if(byteArrayOutputStream!=null){
                 byteArrayOutputStream.close();
             }
         }
-
+        return message;
     }
 
 

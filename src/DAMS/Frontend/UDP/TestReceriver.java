@@ -24,7 +24,7 @@ public class TestReceriver {
                 ByteArrayInputStream in = new ByteArrayInputStream(request.getData());
                 ObjectInputStream is = new ObjectInputStream(in);
                 Request b = (Request) is.readObject();
-                System.out.println(b.getAppointmentID());
+                System.out.println(b.getOperation());
 //                ObjectInput in = null;
 //                try {
 //                    in = new ObjectInputStream(bis);
