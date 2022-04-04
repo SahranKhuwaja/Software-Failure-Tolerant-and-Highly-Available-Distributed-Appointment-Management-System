@@ -13,7 +13,7 @@ public class Frontend {
     public static void initServer(){
         RemoteDistributedAppointmentFrontendBinding op = new
                 RemoteDistributedAppointmentFrontendBinding();
-        String ip = "172.20.10.2";
+        String ip = "172.30.84.19";
         int port = 6800;
         String url = "http://" + ip + ":" + port + "/RemoteDistributedAppointmentFrontend";
         RemoteDistributedAppointmentFrontendWebService rda = op.binding(url, port);
