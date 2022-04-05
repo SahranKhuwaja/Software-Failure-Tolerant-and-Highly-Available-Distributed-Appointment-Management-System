@@ -25,7 +25,7 @@ public class Appointment implements Serializable {
         this.capacity = capacity;
     }
 
-    public String id() {
+    public String getId() {
         return id;
     }
 
@@ -33,7 +33,7 @@ public class Appointment implements Serializable {
         this.id = generateAppointmentId(cityType, timeSlotType, date);
     }
 
-    public CityType cityType() {
+    public CityType getCityType() {
         return cityType;
     }
 
@@ -41,7 +41,7 @@ public class Appointment implements Serializable {
         this.cityType = cityType;
     }
 
-    public AppointmentType apointmentType() {
+    public AppointmentType getAppointmentType() {
         return appointmentType;
     }
 
@@ -49,7 +49,7 @@ public class Appointment implements Serializable {
         this.appointmentType = appointmentType;
     }
 
-    public TimeSlotType timeSlotType() {
+    public TimeSlotType getTimeSlotType() {
         return timeSlotType;
     }
 
@@ -57,7 +57,7 @@ public class Appointment implements Serializable {
         this.timeSlotType = timeSlotType;
     }
 
-    public LocalDate date() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -65,7 +65,7 @@ public class Appointment implements Serializable {
         this.date = date;
     }
 
-    public int capacity() {
+    public int getCapacity() {
         return capacity;
     }
 

@@ -21,7 +21,7 @@ public class User implements Serializable {
         this.cityType = cityType;
     }
 
-    public String id() {
+    public String getId() {
         return id;
     }
 
@@ -29,7 +29,7 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String name() {
+    public String getName() {
         return name;
     }
 
@@ -37,7 +37,7 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public UserType userType() {
+    public UserType getUserType() {
         return userType;
     }
 
@@ -45,7 +45,7 @@ public class User implements Serializable {
         this.userType = userType;
     }
 
-    public CityType cityType() {
+    public CityType getCityType() {
         return cityType;
     }
 
@@ -53,7 +53,7 @@ public class User implements Serializable {
         this.cityType = cityType;
     }
 
-    public Set<UserAppointment> appointments() {
+    public Set<UserAppointment> getAppointments() {
         return appointments;
     }
 

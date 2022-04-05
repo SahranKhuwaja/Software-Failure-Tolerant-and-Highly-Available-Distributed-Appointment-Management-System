@@ -9,7 +9,7 @@ import java.util.HashSet;
 
 public interface AppointmentBooking {
 
-    User login(UserType userType, String userID) throws CustomException;
+    //User login(UserType userType, String userID) throws CustomException;
 
     //Admin role functions
     String addAppointment(String appointmentID, AppointmentType appointmentType, int capacity);

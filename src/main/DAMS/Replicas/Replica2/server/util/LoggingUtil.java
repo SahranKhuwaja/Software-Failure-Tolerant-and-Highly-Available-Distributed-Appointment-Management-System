@@ -59,7 +59,7 @@ public final class LoggingUtil {
     }
 
     private static String getClientFileName(User user) {
-        return "User_" + user.id();
+        return "User_" + user.getId();
     }
 
     private static String getServerFileName(CityType cityType) {
