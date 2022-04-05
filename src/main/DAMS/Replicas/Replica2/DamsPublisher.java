@@ -8,13 +8,18 @@ import static DAMS.Replicas.Replica2.server.util.ServerUtil.getPortByCityType;
 
 public class DamsPublisher {
 
+    private static AppointmentBooking mtlService;
+    private static AppointmentBooking queService;
+    private static AppointmentBooking sheService;
+
     public static void main(String[] args) {
-        Thread udpThread = new Thread(new UDPMainThread());
-        udpThread.start();
 
         startServer(CityType.MTL);
         startServer(CityType.QUE);
         startServer(CityType.SHE);
+
+        Thread udpThread = new Thread(new UDPMainThread(mtlService, queService, sheService));
+        udpThread.start();
     }
 
     private static void startServer(CityType cityType) {
@@ -27,9 +32,21 @@ public class DamsPublisher {
 
     private static void initServer(CityType cityType) throws Exception {
         AppointmentBooking appointmentBookingService = new AppointmentBookingImpl(cityType);
+        switch(cityType) {
+            case MTL:
+                mtlService = appointmentBookingService;
+                break;
+            case QUE:
+                queService = appointmentBookingService;
+                break;
+            case SHE:
+                sheService = appointmentBookingService;
+                break;
+        }
         //Listen to UDP requests
-        Thread tcpThread = new Thread(new UDPThread(cityType, getPortByCityType(cityType), appointmentBookingService));
+        Integer port = getPortByCityType(cityType);
+        Thread tcpThread = new Thread(new UDPThread(cityType, port, appointmentBookingService));
         tcpThread.start();
-        System.out.println(String.format("Server started - %s", cityType.getDescription()));
+        System.out.println(String.format("Server started - %s (Port %s)", cityType.getDescription(), port));
     }
 }

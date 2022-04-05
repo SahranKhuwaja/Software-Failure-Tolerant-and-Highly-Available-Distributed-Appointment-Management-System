@@ -15,7 +15,7 @@ public class UserAppointment implements Serializable {
         this.createdBy = createdBy;
     }
 
-    public Appointment appointment() {
+    public Appointment getAppointment() {
         return appointment;
     }
 
@@ -23,7 +23,7 @@ public class UserAppointment implements Serializable {
         this.appointment = appointment;
     }
 
-    public User createdBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 

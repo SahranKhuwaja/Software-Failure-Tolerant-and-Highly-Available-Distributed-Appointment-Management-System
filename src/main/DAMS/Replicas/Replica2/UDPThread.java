@@ -59,7 +59,7 @@ class UDPThread implements Runnable {
                         log(cityType, "Received UDP request", INFO, String.format("Received request action [%s]", UDPActionType.BOOK_APPOINTMENT.getDescription()));
                         requestData = (HashMap<String, Object>) request.get(UDPActionType.BOOK_APPOINTMENT);
                         appointmentType = AppointmentType.valueOf((String) requestData.get("appointmentType"));
-                        response = appointmentBookingService.bookAppointment((User) requestData.get("requester"), (String) requestData.get("patientID"),
+                        response = appointmentBookingService.bookAppointment((String) requestData.get("requesterID"), (String) requestData.get("patientID"),
                                 (String) requestData.get("appointmentID"), appointmentType);
                         break;
                     case VALIDATE_CANCEL_APPOINTMENT:
@@ -71,7 +71,7 @@ class UDPThread implements Runnable {
                     case CANCEL_APPOINTMENT:
                         log(cityType, "Received UDP request", INFO, String.format("Received request action [%s]", UDPActionType.CANCEL_APPOINTMENT.getDescription()));
                         requestData = (HashMap<String, Object>) request.get(UDPActionType.CANCEL_APPOINTMENT);
-                        response = appointmentBookingService.cancelAppointment((User) requestData.get("requester"), (String) requestData.get("patientID"),
+                        response = appointmentBookingService.cancelAppointment((String) requestData.get("requesterID"), (String) requestData.get("patientID"),
                                 (String) requestData.get("appointmentID"));
                         break;
                     case GET_APPOINTMENT_SCHEDULE:
