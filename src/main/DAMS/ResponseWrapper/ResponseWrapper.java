@@ -1,10 +1,9 @@
-package DAMS.Frontend.ResponseWrapper;
-
-import java.io.Serializable;
-import java.util.HashMap;
+package DAMS.ResponseWrapper;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
+import java.util.HashMap;
 
 @XmlRootElement
 public class ResponseWrapper implements Serializable {

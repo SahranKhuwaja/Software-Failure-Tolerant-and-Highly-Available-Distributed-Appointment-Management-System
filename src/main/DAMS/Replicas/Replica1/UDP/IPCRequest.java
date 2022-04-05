@@ -3,10 +3,7 @@ package DAMS.Replicas.Replica1.UDP;
 
 import DAMS.Replicas.Replica1.Interfaces.UDPRequest;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
+import java.net.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -16,6 +13,7 @@ import java.util.logging.Logger;
 public class IPCRequest implements UDPRequest {
 	DatagramSocket datagramSocket = null;
 	Logger logger;
+	final String HOST_IP = "192.168.2.12";
 	
 	public IPCRequest(Logger logger) {
 		this.logger = logger;
@@ -29,7 +27,8 @@ public class IPCRequest implements UDPRequest {
 		try {
 			datagramSocket = new DatagramSocket();
 			byte[] message = null;
-			InetAddress ip = InetAddress.getLocalHost();
+			InetSocketAddress ip = new InetSocketAddress(HOST_IP,port);
+
 			if (operation.equals("LIST")) {
 				message = Arrays.asList(operation, appointmentType).toString().getBytes();
 			} else if (operation.equals("BOOK")) {
@@ -48,7 +47,7 @@ public class IPCRequest implements UDPRequest {
 				message = Arrays.asList(operation, appointmentType, patientID, appointmentID).toString().getBytes();
 			}
 			
-			DatagramPacket request = new DatagramPacket(message, message.length, ip, port);
+			DatagramPacket request = new DatagramPacket(message, message.length, ip);
 			datagramSocket.send(request);
 
 			byte[] replyBytes = new byte[2000];

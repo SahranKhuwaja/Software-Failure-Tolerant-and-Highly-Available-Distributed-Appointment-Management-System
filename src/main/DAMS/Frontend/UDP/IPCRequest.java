@@ -1,13 +1,15 @@
 package DAMS.Frontend.UDP;
 
-import DAMS.Frontend.Request.Request;
-import DAMS.Replicas.Replica1.Response.Response;
+import DAMS.Request.Request;
+import DAMS.Response.Response;
 
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IPCRequest {
 
@@ -18,11 +20,16 @@ public class IPCRequest {
     ObjectInputStream objectInputStream;
     final String HOST_IP = "192.168.2.12";
     final int PORT = 6821;
+    List<Response> responseQueue;
 
-    public static void main(String[] args) throws IOException {
-        Request r = new Request("MTL","MTLA2046", "test");
-        IPCRequest rr = new IPCRequest();
-        rr.sendRequestToSequencerAndGetReplyFromFE(r);
+//    public static void main(String[] args) throws IOException {
+//        Request r = new Request("MTL","MTLA2046", "test");
+//        IPCRequest rr = new IPCRequest();
+//        rr.sendRequestToSequencerAndGetReplyFromFE(r);
+//    }
+
+    public IPCRequest(){
+        responseQueue = new ArrayList<Response>();
     }
 
     public Response sendRequestToSequencerAndGetReplyFromFE(Request request) {
@@ -34,11 +41,15 @@ public class IPCRequest {
             DatagramPacket requestPacket = new DatagramPacket(message, message.length, ip);
             datagramSocket.send(requestPacket);
             datagramSocket = new DatagramSocket(6802);
-            byte[] replyBytes = new byte[2000];
-            DatagramPacket reply = new DatagramPacket(replyBytes, replyBytes.length);
-            datagramSocket.receive(reply);
-            replyFromRE = this.decodeMessage(reply);
-            System.out.println("Received!");
+
+            while (responseQueue.size()!=1) {
+                byte[] replyBytes = new byte[2000];
+                DatagramPacket reply = new DatagramPacket(replyBytes, replyBytes.length);
+                datagramSocket.receive(reply);
+                replyFromRE = this.decodeMessage(reply);
+                responseQueue.add(replyFromRE);
+            }
+            responseQueue.clear();
 
         } catch (SocketException e) {
             System.out.println(e.getMessage());

@@ -1,4 +1,4 @@
-package DAMS.Frontend.Request;
+package DAMS.Request;
 
 import java.io.Serializable;
 

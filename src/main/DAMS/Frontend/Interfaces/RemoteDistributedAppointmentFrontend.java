@@ -1,9 +1,10 @@
 package DAMS.Frontend.Interfaces;
 
+import DAMS.ResponseWrapper.ResponseWrapper;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import DAMS.Frontend.ResponseWrapper.ResponseWrapper;
 
 @WebService
 @SOAPBinding(style = SOAPBinding.Style.RPC)

@@ -1,9 +1,8 @@
-package DAMS.Frontend.ResponseWrapper;
-
-import java.util.HashMap;
-import java.util.Map;
+package DAMS.ResponseWrapper;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MapAdapter extends XmlAdapter<CutomHashMap[], Map<String, String>> {
 	public MapAdapter() {

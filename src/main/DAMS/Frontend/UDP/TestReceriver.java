@@ -1,7 +1,6 @@
 package DAMS.Frontend.UDP;
 
-import DAMS.Frontend.Request.Request;
-import DAMS.Replicas.Replica1.Response.Response;
+import DAMS.Response.Response;
 
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;

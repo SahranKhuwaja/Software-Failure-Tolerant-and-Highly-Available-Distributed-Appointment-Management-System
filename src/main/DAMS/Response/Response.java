@@ -1,6 +1,6 @@
-package DAMS.Replicas.Replica1.Response;
+package DAMS.Response;
 
-import DAMS.Replicas.Replica1.ResponseWrapper.ResponseWrapper;
+import DAMS.ResponseWrapper.ResponseWrapper;
 
 import java.io.Serializable;
 

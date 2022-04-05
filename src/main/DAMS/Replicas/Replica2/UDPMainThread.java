@@ -1,6 +1,6 @@
 package DAMS.Replicas.Replica2;
 
-import DAMS.Frontend.Request.Request;
+import DAMS.Request.Request;
 import DAMS.Replicas.Replica2.server.domain.CityType;
 import DAMS.Replicas.Replica2.server.util.ConfigUtil;
 

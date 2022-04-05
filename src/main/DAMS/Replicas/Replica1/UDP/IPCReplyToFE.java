@@ -1,10 +1,10 @@
 package DAMS.Replicas.Replica1.UDP;
 
-import DAMS.Frontend.Request.Request;
+import DAMS.Request.Request;
 import DAMS.Replicas.Replica1.Interfaces.UDPReplyToFE;
 import DAMS.Replicas.Replica1.RemoteDistributedAppointment.RemoteDistributedAppointment;
-import DAMS.Replicas.Replica1.Response.Response;
-import DAMS.Replicas.Replica1.ResponseWrapper.ResponseWrapper;
+import DAMS.Response.Response;
+import DAMS.ResponseWrapper.ResponseWrapper;
 
 import java.io.*;
 import java.net.DatagramPacket;

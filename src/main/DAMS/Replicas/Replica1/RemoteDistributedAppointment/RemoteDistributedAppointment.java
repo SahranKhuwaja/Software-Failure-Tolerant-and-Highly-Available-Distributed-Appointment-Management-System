@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import DAMS.Replicas.Replica1.AppointmentSlots.AppointmentSlot;
 import DAMS.Replicas.Replica1.Booking.Booking;
 import DAMS.Replicas.Replica1.Interfaces.DistributedAppointment;
-import DAMS.Replicas.Replica1.ResponseWrapper.ResponseWrapper;
+import DAMS.ResponseWrapper.ResponseWrapper;
 import DAMS.Replicas.Replica1.UDP.IPCRequest;
 
 public class RemoteDistributedAppointment implements DistributedAppointment {
@@ -126,9 +126,9 @@ public class RemoteDistributedAppointment implements DistributedAppointment {
 
 	private void setupUDPPorts() {
 		logger.info("Setting up UDP ports... ");
-		UDPPorts.put("Montreal (MTL)", 6811);
-		UDPPorts.put("Quebec (QUE)", 6812);
-		UDPPorts.put("Sherbrooke (SHE)", 6813);
+		UDPPorts.put("Montreal (MTL)", 6831);
+		UDPPorts.put("Quebec (QUE)", 6832);
+		UDPPorts.put("Sherbrooke (SHE)", 6833);
 		logger.info("UDP ports setted up");
 
 	}

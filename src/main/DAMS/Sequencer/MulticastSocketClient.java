@@ -1,6 +1,6 @@
 package DAMS.Sequencer;
 
-import DAMS.Frontend.Request.Request;
+import DAMS.Request.Request;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

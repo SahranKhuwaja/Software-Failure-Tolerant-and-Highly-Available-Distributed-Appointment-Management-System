@@ -1,7 +1,7 @@
 package DAMS.Replicas.Replica1.Interfaces;
 
 
-import DAMS.Replicas.Replica1.ResponseWrapper.ResponseWrapper;
+import DAMS.ResponseWrapper.ResponseWrapper;
 
 
 

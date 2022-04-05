@@ -1,4 +1,4 @@
-package DAMS.Frontend.ResponseWrapper;
+package DAMS.ResponseWrapper;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
