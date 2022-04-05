@@ -17,7 +17,7 @@ import static DAMS.Replicas.Replica2.server.util.CommonUtil.convertFromBytes;
 import static DAMS.Replicas.Replica2.server.util.CommonUtil.convertToBytes;
 
 public class UDPMainThread implements Runnable {
-
+    private final int REPLICA_NO = 2;
     private AppointmentBooking mtlService;
     private AppointmentBooking queService;
     private AppointmentBooking sheService;
@@ -41,7 +41,7 @@ public class UDPMainThread implements Runnable {
                     aSocket.receive(packet);
 
                     Request request = (Request) convertFromBytes(packet.getData());
-                    AppointmentBooking targetServer = null;
+                    AppointmentBooking targetServer;
                     switch (CityType.valueOf(request.getServerCode())) {
                         case MTL:
                             targetServer = mtlService;
@@ -59,6 +59,7 @@ public class UDPMainThread implements Runnable {
 
                     //Main method to process request in target server
                     Response response = process(targetServer, request);
+                    response.setReplica(REPLICA_NO);
 
                     //Send response to Frontend
                     byte[] responseDataBytes = convertToBytes(response);
