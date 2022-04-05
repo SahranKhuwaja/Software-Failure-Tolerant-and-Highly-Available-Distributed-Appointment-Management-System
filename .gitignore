@@ -3,4 +3,4 @@ out/
 #log files folders
 Generated Files/Client Logs/
 Generated Files/Server Logs/
-Generated Files/Replica2/
+Generated Files/Replica2/logs/

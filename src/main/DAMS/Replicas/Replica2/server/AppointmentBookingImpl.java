@@ -4,6 +4,7 @@ import DAMS.Replicas.Replica2.server.domain.*;
 import DAMS.Replicas.Replica2.server.exception.CustomException;
 import DAMS.Replicas.Replica2.server.util.ConfigUtil;
 import DAMS.Replicas.Replica2.server.util.FileUtil;
+import DAMS.ResponseWrapper.ResponseWrapper;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 import static DAMS.Replicas.Replica2.server.config.DamsConfig.SERVER_HOST;
 import static DAMS.Replicas.Replica2.server.domain.LogLevel.ERROR;
 import static DAMS.Replicas.Replica2.server.domain.LogLevel.INFO;
+import static DAMS.Replicas.Replica2.server.domain.UserType.ADMIN;
 import static DAMS.Replicas.Replica2.server.domain.UserType.PATIENT;
 import static DAMS.Replicas.Replica2.server.exception.CustomErrorType.*;
 import static DAMS.Replicas.Replica2.server.util.CommonUtil.*;
@@ -162,7 +164,7 @@ public class AppointmentBookingImpl implements AppointmentBooking {
     }
 
     @Override
-    public Response addAppointment(String appointmentID, AppointmentType appointmentType, int capacity) {
+    public String addAppointment(String appointmentID, AppointmentType appointmentType, int capacity) {
         String methodName = "addAppointment";
         String methodDescription = "Add appointment";
         String errorString = "Failed to add appointment";
@@ -171,13 +173,15 @@ public class AppointmentBookingImpl implements AppointmentBooking {
             if (!getCityCodeFromId(appointmentID).equals(cityType)) {
                 String message = String.format("[Appointment ID: %s; Type: %s; Capacity: %s] %s :: Unable to create appointment for another city", appointmentID, appointmentType.getDescription(), capacity, errorString);
                 log(cityType, methodDescription, ERROR, message);
-                return new Response(methodName, methodDescription, false, message);
+                return "Appointment ID " + appointmentID + " contains invalid city code, which doesn't match"
+                        + "current city server!";
             }
 
             if (appointments.containsKey(appointmentType) && appointments.get(appointmentType).containsKey(appointmentID)) {
                 String message = String.format("[Appointment ID: %s; Type: %s; Capacity: %s] %s :: Appointment already exists", appointmentID, appointmentType.getDescription(), capacity, errorString);
                 log(cityType, methodDescription, ERROR, message);
-                return new Response(methodName, methodDescription, false, message);
+                return "Appointment Slot with this Appointment ID " + appointmentID + " already exists! \n"
+                        + "Appointment ID should be unique!";
             }
 
             //Appointment type already exists
@@ -189,31 +193,40 @@ public class AppointmentBookingImpl implements AppointmentBooking {
 
             String message = String.format("[Appointment ID: %s; Type: %s; Capacity: %s] Successfully added appointment", appointmentID, appointmentType.getDescription(), capacity);
             log(cityType, methodDescription, INFO, message);
-            return new Response(methodName, methodDescription, true, message);
+            return "Appointment Slot with Appointment ID " + appointmentID + " has" + " been created successfully!";
         } catch (Exception ex) {
             String message = String.format("[Appointment ID: %s; Type: %s; Capacity: %s] %s :: An unknown error has occurred", appointmentID, appointmentType.getDescription(), capacity, errorString);
             log(cityType, methodDescription, ERROR, message, ex);
-            return new Response(methodName, methodDescription, false, message);
+            return message;
         }
     }
 
     @Override
-    public Response removeAppointment(String appointmentID, AppointmentType appointmentType, User requester) {
+    public String removeAppointment(String appointmentID, AppointmentType appointmentType, String requesterUserId) {
         String methodName = "removeAppointment";
         String methodDescription = "Remove appointment";
         String errorString = "Failed to remove appointment";
 
         try {
+            User requester = getUserById(requesterUserId);
+
+            if (Objects.isNull(requester)) {
+                String message = String.format("[Appointment ID: %s; Type: %s; Requester ID: %s] %s :: Unknown User ID provided", appointmentID, appointmentType.getDescription(), requesterUserId, errorString);
+                log(cityType, methodDescription, ERROR, message);
+                return message;
+            }
+
             if (!getCityCodeFromId(appointmentID).equals(cityType)) {
                 String message = String.format("[Appointment ID: %s; Type: %s] %s :: Unable to remove appointment for another city", appointmentID, appointmentType.getDescription(), errorString);
                 log(cityType, methodDescription, ERROR, message);
-                return new Response(methodName, methodDescription, false, message);
+                return "Appointment ID " + appointmentID + " contains invalid city code, "
+                        + "which doesn't match current city server! " + "Please re-enter!";
             }
 
             if (!appointments.containsKey(appointmentType) || !appointments.get(appointmentType).containsKey(appointmentID)) {
                 String message = String.format("[Appointment ID: %s; Type: %s] %s :: No appointment found for removal", appointmentID, appointmentType.getDescription(), errorString);
                 log(cityType, methodDescription, ERROR, message);
-                return new Response(methodName, methodDescription, false, message);
+                return "Appointment Slot with this Appointment ID " + appointmentID + " doesn't exists!";
             }
 
             Appointment appointmentToRemove = appointments.get(appointmentType).get(appointmentID);
@@ -246,27 +259,28 @@ public class AppointmentBookingImpl implements AppointmentBooking {
             appointments.get(appointmentType).remove(appointmentID);
             String message = String.format("[Appointment ID: %s; Type: %s] Successfully removed appointment!", appointmentID, appointmentType.getDescription());
             log(cityType, methodDescription, INFO, message);
-            return new Response(methodName, methodDescription, true, message);
+            return "Appointment Slot with this Appointment ID " + appointmentID + " has been \ndeleted/removed "
+                    + "successfully!";
         } catch (Exception ex) {
             String message = String.format("[Appointment ID: %s; Type: %s] %s :: An error has occurred while trying to remove appointment", appointmentID, appointmentType.getDescription(), errorString);
             log(cityType, methodDescription, ERROR, message, ex);
-            return new Response(methodName, methodDescription, false, message);
+            return message;
         }
     }
 
     @Override
-    public MapResponse<Integer> listAppointmentAvailability(AppointmentType appointmentType) {
+    public ResponseWrapper listAppointmentAvailability(AppointmentType appointmentType) {
         String methodName = "listAppointmentAvailability";
         String methodDescription = "List appointment availability";
         String errorString = "Failed to list appointment availability";
         try (DatagramSocket aSocket = new DatagramSocket()) {
-            HashMap<String, Integer> results = new HashMap<>();
+            HashMap<String, String> results = new HashMap<>();
 
             //Put current server's appointments into results
             if (!Objects.isNull(appointments.get(appointmentType))) {
                 appointments.get(appointmentType)
                         .entrySet().stream()
-                        .forEach(entry -> results.put(entry.getKey(), entry.getValue().capacity()));
+                        .forEach(entry -> results.put(entry.getKey(), String.valueOf(entry.getValue().capacity())));
             }
 
             Map<UDPActionType, String> message = new HashMap<>();
@@ -285,20 +299,20 @@ public class AppointmentBookingImpl implements AppointmentBooking {
                     aSocket.receive(reply);
                     HashMap<String, Appointment> data = (HashMap<String, Appointment>) convertFromBytes(reply.getData());
 
-                    data.entrySet().stream().forEach(entry -> results.put(entry.getKey(), entry.getValue().capacity()));
+                    data.entrySet().stream().forEach(entry -> results.put(entry.getKey(), String.valueOf(entry.getValue().capacity())));
                 }
             }
             log(cityType, methodDescription, INFO, String.format("[Appointment Type: %s] Successfully listed appointment availability!", appointmentType.getDescription()));
-            return new MapResponse<>(methodName, methodDescription, true, results);
+            return new ResponseWrapper(results);
         } catch (Exception e) {
             String message = String.format("[Appointment Type: %s] %s :: An unknown error has occurred", appointmentType.getDescription(), errorString);
             log(cityType, methodDescription, ERROR, message, e);
-            return new MapResponse<>(methodName, methodDescription, false, new HashMap<>());
+            return new ResponseWrapper(new HashMap<>());
         }
     }
 
     @Override
-    public Response bookAppointment(User requester, String patientID, String appointmentID, AppointmentType appointmentType) {
+    public String bookAppointment(String requesterUserId, String patientID, String appointmentID, AppointmentType appointmentType) {
         String methodName = "bookAppointment";
         String methodDescription = "Book appointment";
         String errorString = "Failed to book appointment";
@@ -311,13 +325,21 @@ public class AppointmentBookingImpl implements AppointmentBooking {
 
         //Failed validation
         if (!isValidationSuccess.success()) {
-            return isValidationSuccess;
+            return isValidationSuccess.message();
         }
 
         try {
+            User requester = getUserById(requesterUserId);
+            if (Objects.isNull(requester)) {
+                String message = String.format("[Requester ID: %s; Patient ID: %s; Appointment ID: %s; Type: %s] Unknown User ID provided", requesterUserId, patientID, appointmentID, appointmentType.getDescription());
+                log(cityType, methodDescription, ERROR, message);
+                return message;
+            }
+
             //If appointment is for another server, send UDP request to book
             if (!isDestinationCity) {
-                return bookAppointmentInAnotherCity(methodName, methodDescription, errorString, requester, patientID, appointmentID, appointmentType, destinationCity);
+                Response response = bookAppointmentInAnotherCity(methodName, methodDescription, errorString, requester, patientID, appointmentID, appointmentType, destinationCity);
+                return response.message();
             }
 
             boolean isValidUser = users.containsKey(PATIENT) && users.get(PATIENT).containsKey(patientID);
@@ -335,37 +357,43 @@ public class AppointmentBookingImpl implements AppointmentBooking {
 
             String message = String.format("[Requester ID: %s; Patient ID: %s; Appointment ID: %s; Type: %s] Successfully booked appointment!", requester.id(), patientID, appointmentID, appointmentType.getDescription());
             log(cityType, methodDescription, INFO, message);
-            return new Response(methodName, methodDescription, true, message);
+            return String.format("Appointment ID %s in the Appointment Type %s has been booked successfully!", appointmentID, appointmentType);
 
         } catch (Exception ex) {
-            String message = String.format("[Requester ID: %s; Patient ID: %s; Appointment ID: %s; Type: %s] %s :: An error occurred while trying to book appointment", requester.id(), patientID, appointmentID, appointmentType.getDescription(), errorString);
-            if (ex.getClass().equals(CustomException.class)) {
-                message = String.format("[Requester ID: %s; Patient ID: %s; Appointment ID: %s; Type: %s] %s :: %s", requester.id(), patientID, appointmentID, appointmentType.getDescription(), errorString, ex.getMessage());
-            }
+            String message = String.format("[Requester ID: %s; Patient ID: %s; Appointment ID: %s; Type: %s] %s :: An error occurred while trying to book appointment", requesterUserId, patientID, appointmentID, appointmentType.getDescription(), errorString);
             log(cityType, methodDescription, ERROR, message, ex);
-            return new Response(methodName, methodDescription, false, message);
+            return ex.getMessage();
         }
     }
 
     @Override
-    public Response cancelAppointment(User requester, String patientID, String appointmentID) {
+    public String cancelAppointment(String requesterUserId, String patientID, String appointmentID) {
         String methodName = "cancelAppointment";
         String methodDescription = "Cancel appointment";
         String errorString = "Failed to cancel appointment";
+
         CityType destinationCity = getCityCodeFromId(appointmentID);
         boolean isDestinationCity = destinationCity.equals(cityType);
+
+        User requester = getUserById(requesterUserId);
+        if (Objects.isNull(requester)) {
+            String message = String.format("[Requester ID: %s Patient ID: %s; Appointment ID: %s] :: Unknown User ID provided", requesterUserId, patientID, appointmentID);
+            log(cityType, methodDescription, ERROR, message);
+            return message;
+        }
 
         Response isValidationSuccess = doValidateCancelAppointment(requester, patientID, appointmentID);
 
         //Failed validation
         if (!isValidationSuccess.success()) {
-            return isValidationSuccess;
+            return isValidationSuccess.message();
         }
 
         try {
             //If appointment cancellation is for another server, send UDP request
             if (!isDestinationCity) {
-                return cancelAppointmentInAnotherCity(methodName, methodDescription, errorString, requester, patientID, appointmentID, destinationCity);
+                Response response = cancelAppointmentInAnotherCity(methodName, methodDescription, errorString, requester, patientID, appointmentID, destinationCity);
+                return response.message();
             }
 
             //Cancel appointment
@@ -387,19 +415,19 @@ public class AppointmentBookingImpl implements AppointmentBooking {
             }
             String message = String.format("[Requester ID: %s Patient ID: %s; Appointment ID: %s] :: Successfully cancelled appointment!", requester.id(), patientID, appointmentID);
             log(cityType, methodDescription, INFO, message);
-            return new Response(methodName, methodDescription, true, message);
+            return "Booking appointment schedule of the Patient ID " + patientID + " for the Appointment ID "
+                    + appointmentID + " in the Appointment Type " + foundAppointment.appointment().apointmentType() + " has been "
+                    + " cancelled successfully!";
+
         } catch (Exception ex) {
             String message = String.format("[Requester ID: %s Patient ID: %s; Appointment ID: %s] %s :: An error occurred while trying to cancel appointment", requester.id(), patientID, appointmentID, errorString);
-            if (ex.getClass().equals(CustomException.class)) {
-                message = String.format("[Requester ID: %s; Patient ID: %s; Appointment ID: %s] %s :: %s", requester.id(), patientID, appointmentID, errorString, ex.getMessage());
-            }
             log(cityType, methodDescription, ERROR, message, ex);
-            return new Response(methodName, methodDescription, false, message);
+            return ex.getMessage();
         }
     }
 
     @Override
-    public ListResponse<UserAppointment> getAppointmentSchedule(String patientID) {
+    public String[] getAppointmentSchedule(String patientID) {
         String methodName = "getAppointmentSchedule";
         String methodDescription = "Get appointment schedule";
         String errorString = "Failed to get appointment schedule";
@@ -434,46 +462,56 @@ public class AppointmentBookingImpl implements AppointmentBooking {
             String message = String.format("[Patient ID: %s] Successfully retrieved appointment schedule", patientID);
             log(cityType, methodDescription, INFO, message);
 
-            LinkedHashSet<UserAppointment> set = results.stream()
+            LinkedHashSet<String> set = results.stream()
                     .sorted(Comparator
                             .comparing(UserAppointment::appointment,
                                     Comparator.comparing(Appointment::cityType).thenComparing(Appointment::date))) //Sort by city then date
+                    .map(ua -> "[appointmentID=" + ua.appointment().id() + ", appointmentType=" + ua.appointment().apointmentType())
                     .collect(Collectors.toCollection(LinkedHashSet::new));
-            return new ListResponse<>(methodName, methodDescription, true, set);
+            return set.toArray(String[]::new);
         } catch (Exception e) {
             String message = String.format("[Patient ID: %s] %s :: An unknown error occured", errorString, patientID);
             log(cityType, methodDescription, ERROR, message, e);
-            return new ListResponse<>(methodName, methodDescription, false, new HashSet<>());
+            return new String[0];
         }
     }
 
     @Override
-    public Response swapAppointment(User requester, String patientID, String oldAppointmentID, AppointmentType oldAppointmentType, String newAppointmentID, AppointmentType newAppointmentType) {
+    public String swapAppointment(String requesterUserId, String patientID, String oldAppointmentID, AppointmentType oldAppointmentType, String newAppointmentID, AppointmentType newAppointmentType) {
         String methodName = "swapAppointment";
         String methodDescription = "Swap appointment";
         String errorString = "Failed to swap appointment";
 
         try {
+            User requester = getUserById(requesterUserId);
+            if (Objects.isNull(requester)) {
+                String message = String.format("[Requester ID: %s; Patient ID: %s; Old Appointment: %s (%s); New Appointment: %s (%s)] Unknown User ID provided", requesterUserId, patientID, oldAppointmentID, oldAppointmentType.getDescription(), newAppointmentID, newAppointmentType.getDescription());
+                log(cityType, methodDescription, ERROR, message);
+                return message;
+            }
+
             Response isCancelValidationSuccess = doValidateCancelAppointment(requester, patientID, oldAppointmentID);
             Response isBookValidationSuccess = doValidateBookAppointment(patientID, newAppointmentID, newAppointmentType);
 
             if (isBookValidationSuccess.success() && isCancelValidationSuccess.success()) {
-                cancelAppointment(requester, patientID, oldAppointmentID);
-                bookAppointment(requester, patientID, newAppointmentID, newAppointmentType);
+                cancelAppointment(requesterUserId, patientID, oldAppointmentID);
+                bookAppointment(requesterUserId, patientID, newAppointmentID, newAppointmentType);
 
                 String message = String.format("[Requester ID: %s; Patient ID: %s; Old Appointment: %s (%s); New Appointment: %s (%s)] Successfully swapped appointment!", requester.id(), patientID, oldAppointmentID, oldAppointmentType.getDescription(), newAppointmentID, newAppointmentType.getDescription());
                 log(cityType, methodDescription, INFO, message);
-                return new Response(methodName, methodDescription, true, message);
+                return "Old Appointment ID " + oldAppointmentID + " in the old Appointment Type\n"
+                        + oldAppointmentType + " has been swapped  with new Appointment ID " + newAppointmentID
+                        + " in the new \nAppointment Type " + newAppointmentType + " successfully!";
             } else {
                 String errorMessage = isCancelValidationSuccess.success() ? isBookValidationSuccess.message() : isCancelValidationSuccess.message();
-                String message = String.format("[Requester ID: %s; Patient ID: %s; Old Appointment: %s (%s); New Appointment: %s (%s)] %s :: %s", requester.id(), patientID, oldAppointmentID, oldAppointmentType.getDescription(), newAppointmentID, newAppointmentType.getDescription(), errorString, errorMessage);
-                return new Response(methodName, methodDescription, false, message);
+                //String message = String.format("[Requester ID: %s; Patient ID: %s; Old Appointment: %s (%s); New Appointment: %s (%s)] %s :: %s", requester.id(), patientID, oldAppointmentID, oldAppointmentType.getDescription(), newAppointmentID, newAppointmentType.getDescription(), errorString, errorMessage);
+                return errorMessage;
             }
 
         } catch (Exception ex) {
-            String message = String.format("[Requester ID: %s; Patient ID: %s; Old Appointment: %s (%s); New Appointment: %s (%s)] %s :: An error occurred while trying to swap appointment", requester.id(), patientID, oldAppointmentID, oldAppointmentType.getDescription(), newAppointmentID, newAppointmentType.getDescription(), errorString);
+            String message = String.format("[Requester ID: %s; Patient ID: %s; Old Appointment: %s (%s); New Appointment: %s (%s)] %s :: An error occurred while trying to swap appointment", requesterUserId, patientID, oldAppointmentID, oldAppointmentType.getDescription(), newAppointmentID, newAppointmentType.getDescription(), errorString);
             log(cityType, methodDescription, ERROR, message, ex);
-            return new Response(methodName, methodDescription, false, message);
+            return ex.getMessage();
 
         }
     }
@@ -504,7 +542,7 @@ public class AppointmentBookingImpl implements AppointmentBooking {
             }
             User patient = users.get(PATIENT).get(patientID);
             return new HashSet<>(patient.appointments());
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             String message = String.format("[Appointment Type: %s] %s :: An error occurred while trying to get patient appointments", patientID, errorString);
             log(cityType, methodDescription, ERROR, message, ex);
             return new HashSet<>();
@@ -530,7 +568,7 @@ public class AppointmentBookingImpl implements AppointmentBooking {
 
             //Appointment ID is not valid
             if (!(appointments.containsKey(appointmentType) && appointments.get(appointmentType).containsKey(appointmentID))) {
-                throw new CustomException(ERROR_INVALID_APPOINTMENT_ID);
+                throw new Exception(String.format(ERROR_INVALID_APPOINTMENT_ID.getDescription(), appointmentID, appointmentType));
             }
 
             //Appointment ID is valid
@@ -538,7 +576,7 @@ public class AppointmentBookingImpl implements AppointmentBooking {
 
             //Appointment has no more available slots
             if (!hasCapacity(appointment)) {
-                throw new CustomException(ERROR_UNAVAILABLE_APPOINTMENT_SLOT);
+                throw new Exception(String.format(ERROR_UNAVAILABLE_APPOINTMENT_SLOT.getDescription(), appointmentID, appointmentType));
             }
 
             //Checks if user has existing appointments booked and do validations
@@ -553,7 +591,7 @@ public class AppointmentBookingImpl implements AppointmentBooking {
                         .findFirst()
                         .orElse(null);
                 if (existingAppointment != null) {
-                    throw new CustomException(ERROR_SAME_APPOINTMENT_BOOKED);
+                    throw new Exception(String.format(ERROR_SAME_APPOINTMENT_BOOKED.getDescription(), appointmentID, appointmentType));
                 }
 
                 //User cannot have same appointment type in the same day
@@ -569,12 +607,9 @@ public class AppointmentBookingImpl implements AppointmentBooking {
             log(cityType, methodDescription, INFO, message);
             return new Response(methodName, methodDescription, true, message);
         } catch (Exception ex) {
-            String message = String.format("[Patient ID: %s; Appointment ID: %s; Type: %s] %s :: An error occurred while trying to validate book appointment", patientID, appointmentID, appointmentType.getDescription(), errorString);
-            if (ex.getClass().equals(CustomException.class)) {
-                message = String.format("[Patient ID: %s; Appointment ID: %s; Type: %s] %s :: %s", patientID, appointmentID, appointmentType.getDescription(), errorString, ex.getMessage());
-            }
-            log(cityType, methodDescription, ERROR, message, ex);
-            return new Response(methodName, methodDescription, false, message);
+            //String message = String.format("[Patient ID: %s; Appointment ID: %s; Type: %s] %s :: An error occurred while trying to validate book appointment", patientID, appointmentID, appointmentType.getDescription(), errorString);
+            log(cityType, methodDescription, ERROR, ex.getMessage(), ex);
+            return new Response(methodName, methodDescription, false, ex.getMessage());
         }
     }
 
@@ -592,7 +627,7 @@ public class AppointmentBookingImpl implements AppointmentBooking {
             User patient = users.get(PATIENT).get(patientID);
 
             if (patient.appointments().isEmpty()) {
-                throw new CustomException(ERROR_USER_NO_APPOINTMENTS);
+                throw new Exception(String.format(ERROR_USER_INVALID_APPOINTMENT_ID.getDescription(), patientID));
             }
             Set<UserAppointment> bookedAppointments = patient.appointments();
             UserAppointment foundAppointment = bookedAppointments.stream()
@@ -602,12 +637,12 @@ public class AppointmentBookingImpl implements AppointmentBooking {
 
             //No valid appointment found booked by user
             if (Objects.isNull(foundAppointment)) {
-                throw new CustomException(ERROR_INVALID_APPOINTMENT_ID);
+                throw new Exception(String.format(ERROR_USER_INVALID_APPOINTMENT_ID.getDescription(), patientID));
             }
 
             //Requester user ID must be same as user who booked appointment
             if (!foundAppointment.createdBy().id().equals(requester.id())) {
-                throw new CustomException(ERROR_CANCEL_APPOINTMENT_USER_MISMATCH);
+                throw new Exception(ERROR_CANCEL_APPOINTMENT_USER_MISMATCH.getDescription());
             }
 
             String message = String.format("[Requester ID: %s; Patient ID: %s; Appointment ID: %s] Successfully validated appointment!", requester.id(), patientID, appointmentID);
@@ -667,7 +702,7 @@ public class AppointmentBookingImpl implements AppointmentBooking {
                             byte[] buffer = new byte[65508];
                             DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
                             aSocket.receive(reply);
-                            HashSet<UserAppointment> response = (HashSet<UserAppointment> ) convertFromBytes(reply.getData());
+                            HashSet<UserAppointment> response = (HashSet<UserAppointment>) convertFromBytes(reply.getData());
                             otherCityAppointments.addAll(response);
                         }
                     }
@@ -791,7 +826,7 @@ public class AppointmentBookingImpl implements AppointmentBooking {
         try (DatagramSocket aSocket = new DatagramSocket()) {
             Map<UDPActionType, Object> requestMessage = new HashMap<>();
             requestMessage.put(UDPActionType.BOOK_APPOINTMENT, new HashMap<String, Object>(Map.of(
-                    "requester", requester,
+                    "requesterID", requester.id(),
                     "patientID", patientID,
                     "appointmentID", appointmentID,
                     "appointmentType", appointmentType.name()
@@ -826,7 +861,7 @@ public class AppointmentBookingImpl implements AppointmentBooking {
         try (DatagramSocket aSocket = new DatagramSocket()) {
             Map<UDPActionType, Object> requestMessage = new HashMap<>();
             requestMessage.put(UDPActionType.CANCEL_APPOINTMENT, new HashMap<>(Map.of(
-                    "requester", requester,
+                    "requesterID", requester.id(),
                     "patientID", patientID,
                     "appointmentID", appointmentID
             )));
@@ -904,5 +939,16 @@ public class AppointmentBookingImpl implements AppointmentBooking {
                     .orElse(null);
         }
         return null;
+    }
+
+    private User getUserById(String userId) {
+        if (users.containsKey(PATIENT) && users.get(PATIENT).containsKey(userId)) {
+            return users.get(PATIENT).get(userId);
+        } else if (users.containsKey(PATIENT) && users.get(PATIENT).containsKey(userId)) {
+            return users.get(ADMIN).get(userId);
+        } else {
+            log(cityType, "Get user by ID", ERROR, "Unknown user ID" + userId);
+            return null;
+        }
     }
 }
