@@ -5,6 +5,7 @@ import DAMS.ResponseWrapper.ResponseWrapper;
 import java.io.Serializable;
 
 public class Response implements Serializable {
+    int replica;
     boolean success;
     String methodName;
     String methodDescription;
@@ -34,6 +35,14 @@ public class Response implements Serializable {
         this.methodDescription = methodDescription;
         this.success = success;
         this.responseWrapper = responseWrapper;
+    }
+
+    public int getReplica() {
+        return replica;
+    }
+
+    public void setReplica(int replica) {
+        this.replica = replica;
     }
 
     public String methodName() {
