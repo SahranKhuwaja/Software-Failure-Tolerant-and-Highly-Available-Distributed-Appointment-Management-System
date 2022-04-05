@@ -1,6 +1,7 @@
 package DAMS.Frontend.UDP;
 
 import DAMS.Frontend.Request.Request;
+import DAMS.Replicas.Replica1.Response.Response;
 
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
@@ -21,8 +22,8 @@ public class TestReceriver {
                 datagramSocket.receive(request);
                 ByteArrayInputStream in = new ByteArrayInputStream(request.getData());
                 ObjectInputStream is = new ObjectInputStream(in);
-                Request b = (Request) is.readObject();
-                System.out.println(b.getOperation());
+                Response b = (Response) is.readObject();
+                System.out.println(b.message());
 //                ObjectInput in = null;
 //                try {
 //                    in = new ObjectInputStream(bis);

@@ -23,7 +23,7 @@ public class IPCReplyToFE extends Thread implements UDPReplyToFE {
     ByteArrayOutputStream byteArrayOutputStream;
     ObjectOutputStream objectOutputStream;
     final String HOST_IP = "192.168.2.12";
-    final int PORT = 6821;
+    final int PORT = 6802;
 
     public IPCReplyToFE(DatagramSocket datagramSocket, String serverName, int port, RemoteDistributedAppointment rda) {
         this.datagramSocket = datagramSocket;
@@ -82,7 +82,7 @@ public class IPCReplyToFE extends Thread implements UDPReplyToFE {
         return requestFromRM;
     }
 
-    public Response wrapMessage(Request request){
+    private Response wrapMessage(Request request){
         Response response = null;
         boolean success;
         String message;
@@ -145,7 +145,7 @@ public class IPCReplyToFE extends Thread implements UDPReplyToFE {
 
     }
 
-    public byte[] encodeToByteArray(Response response) throws IOException {
+    private byte[] encodeToByteArray(Response response) throws IOException {
         byte[] message = null;
         try{
             byteArrayOutputStream = new ByteArrayOutputStream();
@@ -162,9 +162,6 @@ public class IPCReplyToFE extends Thread implements UDPReplyToFE {
         }
         return message;
     }
-
-
-
 
 
 }

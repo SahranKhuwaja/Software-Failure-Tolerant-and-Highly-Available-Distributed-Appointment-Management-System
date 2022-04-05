@@ -4,6 +4,7 @@ import DAMS.Frontend.Interfaces.RemoteDistributedAppointmentFrontend;
 import DAMS.Frontend.Request.Request;
 import DAMS.Frontend.ResponseWrapper.ResponseWrapper;
 import DAMS.Frontend.UDP.IPCRequest;
+import DAMS.Replicas.Replica1.Response.Response;
 
 import javax.jws.WebService;
 import java.io.BufferedReader;
@@ -40,6 +41,8 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     @Override
     public String serverResponse() {
         System.out.println("working");
+        Request request = new Request(serverCode, userID,"AddAppointment", "MTLE220222", "Dental", "Testing...", 3);
+        ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
         return "testing";
 
     }
@@ -101,21 +104,16 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
 
     @Override
     public String[] getAppointmentTypes() {
-        try {
-            Request request = new Request(serverCode, userID, "GetAppointmentTypes");
-            ipcRequest.sendRequestToSequencer(request);
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        return null;
-
+        Request request = new Request(serverCode, userID, "GetAppointmentTypes");
+        Response response = ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
+        return response.getMessages();
     }
 
     @Override
     public String[] getTimeSlots() {
         try {
             Request request = new Request(serverCode, userID,"GetTimeSlots");
-            ipcRequest.sendRequestToSequencer(request);
+            ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
         }catch (Exception e){
             System.out.println(e);
         }
@@ -126,7 +124,7 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     public String addAppointment(String appointmentID, String appointmentType, String appointmentDescription, int capacity) {
         try {
             Request request = new Request(serverCode, userID,"AddAppointment", appointmentID, appointmentType, appointmentDescription, capacity);
-            ipcRequest.sendRequestToSequencer(request);
+            ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
         }catch (Exception e){
             System.out.println(e);
         }
@@ -137,7 +135,7 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     public ResponseWrapper viewAppointment(String appointmentType) {
         try {
             Request request = new Request(serverCode, userID,"ViewAppointment", appointmentType);
-            ipcRequest.sendRequestToSequencer(request);
+            ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
         }catch (Exception e){
             System.out.println(e);
         }
@@ -148,7 +146,7 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     public String removeAppointment(String appointmentID, String appointmentType) {
         try {
             Request request = new Request(serverCode, userID,"RemoveAppointment", appointmentID, appointmentType);
-            ipcRequest.sendRequestToSequencer(request);
+            ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
         }catch (Exception e){
             System.out.println(e);
         }
@@ -159,7 +157,7 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     public ResponseWrapper listAppointmentAvailability(String appointmentType) {
         try {
             Request request = new Request(serverCode, userID,"ListAppointmentAvailability", appointmentType);
-            ipcRequest.sendRequestToSequencer(request);
+            ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
         }catch (Exception e){
             System.out.println(e);
         }
@@ -170,7 +168,7 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     public String bookAppointment(String patientID, String appointmentID, String appointmentType) {
         try {
             Request request = new Request(serverCode, userID,"BookAppointment", patientID, appointmentID, appointmentType);
-            ipcRequest.sendRequestToSequencer(request);
+            ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
         }catch (Exception e){
             System.out.println(e);
         }
@@ -181,7 +179,7 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     public String[] getAppointmentSchedule(String patientID) {
         try {
             Request request = new Request(serverCode, userID,"GetAppointmentSchedule", patientID, null, "PatientOperation", role);
-            ipcRequest.sendRequestToSequencer(request);
+            ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
         }catch (Exception e){
             System.out.println(e);
         }
@@ -192,7 +190,7 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     public String cancelAppointment(String patientID, String appointmentID, String appointmentType) {
         try {
             Request request = new Request(serverCode, userID,"CancelAppointment", patientID, appointmentID, appointmentType);
-            ipcRequest.sendRequestToSequencer(request);
+            ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
         }catch (Exception e){
             System.out.println(e);
         }
@@ -203,7 +201,7 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     public String swapAppointment(String patientID, String oldAppointmentID, String oldAppointmentType, String newAppointmentID, String newAppointmentType) {
         try {
             Request request = new Request(serverCode, userID,"SwapAppointment", patientID, oldAppointmentID, oldAppointmentType, newAppointmentID, newAppointmentType);
-            ipcRequest.sendRequestToSequencer(request);
+            ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
         }catch (Exception e){
             System.out.println(e);
         }
