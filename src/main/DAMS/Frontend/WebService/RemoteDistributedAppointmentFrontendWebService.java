@@ -111,24 +111,18 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
 
     @Override
     public String[] getTimeSlots() {
-        try {
-            Request request = new Request(serverCode, userID,"GetTimeSlots");
-            ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        return null;
+
+        Request request = new Request(serverCode, userID,"GetTimeSlots");
+        Response response = ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
+        return response.getMessages();
     }
 
     @Override
     public String addAppointment(String appointmentID, String appointmentType, String appointmentDescription, int capacity) {
-        try {
-            Request request = new Request(serverCode, userID,"AddAppointment", appointmentID, appointmentType, appointmentDescription, capacity);
-            ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        return null;
+
+        Request request = new Request(serverCode, userID,"AddAppointment", appointmentID, appointmentType, appointmentDescription, capacity);
+        Response response = ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
+        return response.message();
     }
 
     @Override
@@ -162,24 +156,21 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
 
     @Override
     public String bookAppointment(String patientID, String appointmentID, String appointmentType) {
-        try {
-            Request request = new Request(serverCode, userID,"BookAppointment", patientID, appointmentID, appointmentType);
-            ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        return null;
+        Request request = new Request(serverCode, userID,"BookAppointment", patientID, appointmentID, appointmentType);
+        Response response = ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
+        return response.message();
     }
 
     @Override
     public String[] getAppointmentSchedule(String patientID) {
-        try {
-            Request request = new Request(serverCode, userID,"GetAppointmentSchedule", patientID, null, "PatientOperation", role);
-            ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
-        }catch (Exception e){
-            System.out.println(e);
+        Request request = new Request(serverCode, userID,"GetAppointmentSchedule", patientID, "","");
+        System.out.println(patientID);
+        Response response = ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
+        System.out.println(response.getMessages().length);
+        for(String a : response.getMessages()){
+            System.out.println(a);
         }
-        return null;
+        return response.getMessages();
     }
 
     @Override

@@ -6,7 +6,7 @@ import DAMS.Frontend.WebService.RemoteDistributedAppointmentFrontendWebService;
 
 public class Frontend {
 
-    public static final String HOST_IP = "192.168.2.12";
+    public static final String HOST_IP = "172.20.10.2";
     public static final int PORT = 6800;
 
     public static void main(String[] args){

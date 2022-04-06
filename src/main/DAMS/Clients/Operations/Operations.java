@@ -19,7 +19,7 @@ public class Operations implements ClientOperations {
 	public String role;
 	
 	public Operations(String role) {
-		frontEndDetails.put("ip","192.168.2.12");
+		frontEndDetails.put("ip","172.20.10.2");
 		frontEndDetails.put("port","6800");
 		this.role = role;
 	}

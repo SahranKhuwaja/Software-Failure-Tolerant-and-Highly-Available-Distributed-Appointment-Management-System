@@ -18,8 +18,8 @@ public class IPCRequest {
     ObjectOutputStream objectOutputStream;
     ByteArrayInputStream byteArrayInputStream;
     ObjectInputStream objectInputStream;
-    final String HOST_IP = "192.168.2.12";
-    final int PORT = 6821;
+    final String HOST_IP = "172.20.10.4";
+    final int PORT = 6807;
     List<Response> responseQueue;
 
 //    public static void main(String[] args) throws IOException {
@@ -42,13 +42,13 @@ public class IPCRequest {
             datagramSocket.send(requestPacket);
             datagramSocket = new DatagramSocket(6802);
 
-            while (responseQueue.size()!=1) {
+          //  while (responseQueue.size()!=1) {
                 byte[] replyBytes = new byte[2000];
                 DatagramPacket reply = new DatagramPacket(replyBytes, replyBytes.length);
                 datagramSocket.receive(reply);
                 replyFromRE = this.decodeMessage(reply);
                 responseQueue.add(replyFromRE);
-            }
+           // }
             responseQueue.clear();
 
         } catch (SocketException e) {
