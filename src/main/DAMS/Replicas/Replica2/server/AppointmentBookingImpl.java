@@ -41,7 +41,7 @@ public class AppointmentBookingImpl implements AppointmentBooking {
         this.cityType = cityType;
         initUsers();
         initAppointments();
-        //initUserAppointments(); //TODO: enable to initialize booking appointments for user
+        initUserAppointments(); //TODO: enable to initialize booking appointments for user
     }
 
     private void initUsers() {
@@ -462,7 +462,7 @@ public class AppointmentBookingImpl implements AppointmentBooking {
                     .sorted(Comparator
                             .comparing(UserAppointment::getAppointment,
                                     Comparator.comparing(Appointment::getCityType).thenComparing(Appointment::getDate))) //Sort by city then date
-                    .map(ua -> "[appointmentID=" + ua.getAppointment().getId() + ", appointmentType=" + ua.getAppointment().getAppointmentType())
+                    .map(ua -> "[appointmentID=" + ua.getAppointment().getId() + ", appointmentType=" + ua.getAppointment().getAppointmentType().getDescription())
                     .collect(Collectors.toCollection(LinkedHashSet::new));
             return set.toArray(String[]::new);
         } catch (Exception e) {

@@ -1,7 +1,6 @@
 package DAMS.Replicas.Replica2.server;
 
 import DAMS.Replicas.Replica2.server.domain.*;
-import DAMS.Replicas.Replica2.server.exception.CustomException;
 import DAMS.ResponseWrapper.ResponseWrapper;
 
 import java.util.HashMap;
@@ -40,7 +39,5 @@ public interface AppointmentBooking {
     String[] getAppointmentTypes();
 
     String[] getTimeSlots();
-
-    //TODO: view appointment type
 
 }

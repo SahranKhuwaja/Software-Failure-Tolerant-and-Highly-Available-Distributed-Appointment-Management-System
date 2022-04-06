@@ -78,22 +78,22 @@ public class UDPMainThread implements Runnable {
         String message;
         ResponseWrapper responseWrapper;
         Response response = null;
-
+        System.out.println(request.getOperation());
         switch (request.getOperation()) {
             case "AddAppointment":
-                message = targetServer.addAppointment(request.getAppointmentID(), AppointmentType.valueOf(request.getAppointmentType()), request.getCapacity());
+                message = targetServer.addAppointment(request.getAppointmentID(), AppointmentType.getAppointmentTypeFromDescription(request.getAppointmentType()), request.getCapacity());
                 response = new Response(request.getOperation(), request.getOperation(), message.toLowerCase().contains("success"), message);
                 break;
             case "RemoveAppointment":
-                message = targetServer.removeAppointment(request.getAppointmentID(), AppointmentType.valueOf(request.getAppointmentType()), request.getUserID());
+                message = targetServer.removeAppointment(request.getAppointmentID(), AppointmentType.getAppointmentTypeFromDescription(request.getAppointmentType()), request.getUserID());
                 response = new Response(request.getOperation(), request.getOperation(), message.toLowerCase().contains("success"), message);
                 break;
             case "ListAppointmentAvailability":
-                responseWrapper = targetServer.listAppointmentAvailability(AppointmentType.valueOf(request.getAppointmentType()));
+                responseWrapper = targetServer.listAppointmentAvailability(AppointmentType.getAppointmentTypeFromDescription(request.getAppointmentType()));
                 response = new Response(request.getOperation(), request.getOperation(), responseWrapper.getData().isEmpty(), responseWrapper);
                 break;
             case "BookAppointment":
-                message = targetServer.bookAppointment(request.getUserID(), request.getPatientID(), request.getAppointmentID(), AppointmentType.valueOf(request.getAppointmentType()));
+                message = targetServer.bookAppointment(request.getUserID(), request.getPatientID(), request.getAppointmentID(), AppointmentType.getAppointmentTypeFromDescription(request.getAppointmentType()));
                 response = new Response(request.getOperation(), request.getOperation(), message.toLowerCase().contains("success"), message);
                 break;
             case "GetAppointmentSchedule":
@@ -106,8 +106,8 @@ public class UDPMainThread implements Runnable {
                 break;
             case "SwapAppointment":
                 message = targetServer.swapAppointment(request.getUserID(), request.getPatientID(),
-                        request.getOldAppointmentID(), AppointmentType.valueOf(request.getOldAppointmentType()),
-                        request.getAppointmentID(), AppointmentType.valueOf(request.getAppointmentType()));
+                        request.getOldAppointmentID(), AppointmentType.getAppointmentTypeFromDescription(request.getOldAppointmentType()),
+                        request.getAppointmentID(), AppointmentType.getAppointmentTypeFromDescription(request.getAppointmentType()));
                 response = new Response(request.getOperation(), request.getOperation(), message.toLowerCase().contains("success"), message);
                 break;
             case "GetAppointmentTypes":
