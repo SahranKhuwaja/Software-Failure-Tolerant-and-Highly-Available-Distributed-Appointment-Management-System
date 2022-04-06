@@ -16,7 +16,7 @@ public class FaultTolerance {
 
     public static void main(String[] args){
         Response rep1 = new Response("AddAppointment","AddAppointment"
-                , false, "Success");
+                , true, "Success");
         rep1.setReplica(1);
         Response rep2 = new Response("AddAppointment","AddAppointment"
                 , false, "Success");
