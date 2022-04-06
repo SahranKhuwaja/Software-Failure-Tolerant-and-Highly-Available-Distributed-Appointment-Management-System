@@ -1,6 +1,7 @@
 package DAMS.Request;
 
 import java.io.Serializable;
+import java.net.InetAddress;
 
 public class Request implements Serializable {
     String serverCode;
@@ -16,6 +17,8 @@ public class Request implements Serializable {
     String oldAppointmentID;
     String oldAppointmentType;
     Integer sequenceNumber;
+    InetAddress FE_IP;
+    int FE_PORT;
 
     public Request(String serverCode, String userID, String operation) {
         this.serverCode = serverCode;
@@ -189,5 +192,21 @@ public class Request implements Serializable {
 
     public void setSequenceNumber(Integer sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
+    }
+
+    public InetAddress getFE_IP() {
+        return FE_IP;
+    }
+
+    public void setFE_IP(InetAddress FE_IP) {
+        this.FE_IP = FE_IP;
+    }
+
+    public int getFE_PORT() {
+        return FE_PORT;
+    }
+
+    public void setFE_PORT(int FE_PORT) {
+        this.FE_PORT = FE_PORT;
     }
 }
