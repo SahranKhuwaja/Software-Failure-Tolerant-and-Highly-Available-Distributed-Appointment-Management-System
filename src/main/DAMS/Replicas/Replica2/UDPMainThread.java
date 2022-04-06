@@ -13,8 +13,10 @@ import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 
 import static DAMS.Replicas.Replica2.server.config.DamsConfig.*;
+import static DAMS.Replicas.Replica2.server.domain.LogLevel.INFO;
 import static DAMS.Replicas.Replica2.server.util.CommonUtil.convertFromBytes;
 import static DAMS.Replicas.Replica2.server.util.CommonUtil.convertToBytes;
+import static DAMS.Replicas.Replica2.server.util.LoggingUtil.log;
 
 public class UDPMainThread implements Runnable {
     private final int REPLICA_NO = 2;
@@ -56,6 +58,7 @@ public class UDPMainThread implements Runnable {
                             System.out.println("Unknown server code received");
                             return;
                     }
+                    log(CityType.valueOf(request.getServerCode()), "Received UDP message", INFO, request.getOperation());
 
                     //Main method to process request in target server
                     Response response = process(targetServer, request);
@@ -63,7 +66,7 @@ public class UDPMainThread implements Runnable {
 
                     //Send response to Frontend
                     byte[] responseDataBytes = convertToBytes(response);
-                    InetSocketAddress ip = new InetSocketAddress(ConfigUtil.getPropValue(FRONTEND_UDP_SERVER_IP), Integer.parseInt(ConfigUtil.getPropValue(FRONTEND_UDP_SERVER_PORT)));
+                    InetSocketAddress ip = new InetSocketAddress(request.getFE_IP(), request.getFE_PORT());
                     DatagramPacket reply = new DatagramPacket(responseDataBytes, responseDataBytes.length, ip);
                     aSocket.send(reply);
                 }
@@ -78,7 +81,7 @@ public class UDPMainThread implements Runnable {
         String message;
         ResponseWrapper responseWrapper;
         Response response = null;
-        System.out.println(request.getOperation());
+
         switch (request.getOperation()) {
             case "AddAppointment":
                 message = targetServer.addAppointment(request.getAppointmentID(), AppointmentType.getAppointmentTypeFromDescription(request.getAppointmentType()), request.getCapacity());
@@ -90,6 +93,7 @@ public class UDPMainThread implements Runnable {
                 break;
             case "ListAppointmentAvailability":
                 responseWrapper = targetServer.listAppointmentAvailability(AppointmentType.getAppointmentTypeFromDescription(request.getAppointmentType()));
+                responseWrapper.setReplica(REPLICA_NO);
                 response = new Response(request.getOperation(), request.getOperation(), responseWrapper.getData().isEmpty(), responseWrapper);
                 break;
             case "BookAppointment":
