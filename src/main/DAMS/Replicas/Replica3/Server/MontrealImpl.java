@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.*;
+import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -25,6 +26,7 @@ public class MontrealImpl implements HospitalInterface {
     public MontrealImpl(){
         super();
         UDPListener listener = new UDPListener();
+        System.out.println("hello");
 
         HashMap<String,Integer> t1=new HashMap<String,Integer>();
         t1.put("MTLA200222",3);
@@ -44,6 +46,7 @@ public class MontrealImpl implements HospitalInterface {
         al1.add("SHEA220222 D");
         al1.add("SHEA200222 P");
         MTLP.put("MTLP1234", al1);
+        System.out.println("hello2");
 
 
         listener.start();
@@ -56,14 +59,15 @@ public class MontrealImpl implements HospitalInterface {
         FileWriter fw = null;
         BufferedWriter output = null;
         try {
+            String path  = System.getProperty("user.dir");
 
-            myObj = new File("DAMS/Replicas/Replica3/logs/MTLServerLogs.txt");
+            myObj = new File(path + "/src/main/DAMS/Replicas/Replica3/logs/MTLServerLogs.txt");
 
             if (myObj.createNewFile()) {
                 System.out.println("Log File created: " + myObj.getName());
             }
 
-            fw = new FileWriter("DAMS/Replicas/Replica3/logs/MTLServerLogs.txt", true);
+            fw = new FileWriter(path + "/src/main/DAMS/Replicas/Replica3/logs/MTLServerLogs.txt", true);
             output = new BufferedWriter(fw);
         }catch(Exception e) {
             System.out.println("Error while creating Logs");
@@ -225,13 +229,12 @@ public class MontrealImpl implements HospitalInterface {
     @Override
     public synchronized String addAppointment(String appointmentID, String appointmentType, Integer capacity) {
 
-
+        System.out.println(appointmentID+"hell"+appointmentType+"hello2"+capacity);
         BufferedWriter output = logWriter();
         try {
 
             output.append(df.format(d)+"Request for add Appointment Received at Montreal Server"+System.lineSeparator());
             output.append(df.format(d)+" Data From Client"+" appointmentID "+appointmentID+" appointmentType "+appointmentType+" Capacity "+capacity+System.lineSeparator());
-
 
             boolean has_type=MTLA.containsKey(appointmentType);
             boolean has_id=MTLA.get(appointmentType).containsKey(appointmentID);
@@ -253,6 +256,7 @@ public class MontrealImpl implements HospitalInterface {
 
         }catch(Exception e) {
             try {
+                System.out.println(e.getMessage());
                 output.append(df.format(d)+" Some error occured"+System.lineSeparator());
                 output.append(System.lineSeparator());
                 output.close();

@@ -1,0 +1,24 @@
+2022/04/06 14:56:46Request for add Appointment Received at Montreal Server
+2022/04/06 14:56:46 Data From Client appointmentID MTLE100224 appointmentType Physician Capacity 2
+2022/04/06 14:56:46 Some error occured
+
+2022/04/06 14:56:46Request for add Appointment Received at Montreal Server
+2022/04/06 14:56:46 Data From Client appointmentID MTLA100225 appointmentType Physician Capacity 3
+2022/04/06 14:56:46 Some error occured
+
+2022/04/06 15:03:27Request for add Appointment Received at Montreal Server
+2022/04/06 15:03:27 Data From Client appointmentID MTLE100224 appointmentType PHYSICIAN Capacity 2
+2022/04/06 15:03:27 Some error occured
+
+2022/04/06 15:05:39Request for add Appointment Received at Montreal Server
+2022/04/06 15:05:39 Data From Client appointmentID MTLE100224 appointmentType PHYSICIAN Capacity 2
+2022/04/06 15:05:39 Some error occured
+
+2022/04/06 15:10:20Request for add Appointment Received at Montreal Server
+2022/04/06 15:10:20 Data From Client appointmentID MTLE124534 appointmentType PHYSICIAN Capacity 3
+2022/04/06 15:10:20 Some error occured
+
+2022/04/06 15:13:13Request for add Appointment Received at Montreal Server
+2022/04/06 15:13:13 Data From Client appointmentID MTLE124534 appointmentType P Capacity 3
+2022/04/06 15:13:13 Appointment added Successfully 
+

@@ -23,8 +23,8 @@ public class MTLReplyToFE extends Thread{
     ObjectInputStream objectInputStream;
     ByteArrayOutputStream byteArrayOutputStream;
     ObjectOutputStream objectOutputStream;
-    final String HOST_IP = "192.168.2.12";
-    final int PORT = 6821;
+    final String HOST_IP = "172.20.10.2";
+    final int PORT = 6802;
 
 
     public MTLReplyToFE(DatagramSocket datagramSocket, String serverName, int port, MontrealImpl rda) {
@@ -111,49 +111,52 @@ public class MTLReplyToFE extends Thread{
                 break;
 
             case "AddAppointment":
-                message = MTL.addAppointment(request.getAppointmentID(), request.getAppointmentType(), request.getCapacity());
+                message = MTL.addAppointment(request.getAppointmentID().toUpperCase(), request.getAppointmentType().substring(0,1).toUpperCase(), request.getCapacity());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
 
             case "RemoveAppointment":
-                message = MTL.removeAppointment(request.getAppointmentID(), request.getAppointmentType());
+                message = MTL.removeAppointment(request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "ListAppointmentAvailability":
-                message = MTL.listAppointmentAvailability(request.getAppointmentType());
+                message = MTL.listAppointmentAvailability(request.getAppointmentType().toUpperCase());
                 success = message.length()!=0?true:false;
-                response = new Response(request.getOperation(), request.getOperation(), success, message);
+                ResponseWrapper rw = new ResponseWrapper();
+                rw.setMessage(message);
+                rw.setReplica(3);
+                response = new Response(request.getOperation(), request.getOperation(), success, rw);
                 break;
 
             case "BookAppointment":
-                message = MTL.bookAppointment(request.getPatientID(),request.getAppointmentID(), request.getAppointmentType());
+                message = MTL.bookAppointment(request.getPatientID().toUpperCase(),request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "GetAppointmentSchedule":
-                message = MTL.getAppointmentSchedule(request.getPatientID());
+                message = MTL.getAppointmentSchedule(request.getPatientID().toUpperCase());
                 success = message.length()!=0?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "CancelAppointment":
-                message = MTL.cancelAppointment(request.getPatientID(), request.getAppointmentID(), request.getAppointmentType());
+                message = MTL.cancelAppointment(request.getPatientID().toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "SwapAppointment":
-                message = MTL.swapAppointment(request.getPatientID(),request.getOldAppointmentID(), request.getOldAppointmentType(), request.getAppointmentID(), request.getAppointmentType());
+                message = MTL.swapAppointment(request.getPatientID().toUpperCase(),request.getOldAppointmentID().toUpperCase(), request.getOldAppointmentType().toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
         }
-
+        response.setReplica(3);
         return response;
 
     }

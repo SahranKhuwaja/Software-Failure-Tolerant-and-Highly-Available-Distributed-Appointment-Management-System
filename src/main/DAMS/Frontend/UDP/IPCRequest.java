@@ -18,8 +18,8 @@ public class IPCRequest {
     ObjectOutputStream objectOutputStream;
     ByteArrayInputStream byteArrayInputStream;
     ObjectInputStream objectInputStream;
-    final String HOST_IP = "172.20.10.5";
-    final int PORT = 6821;
+    final String HOST_IP = "172.20.10.2";
+    final int PORT = 6481;
     List<Response> responseQueue;
 
 //    public static void main(String[] args) throws IOException {
