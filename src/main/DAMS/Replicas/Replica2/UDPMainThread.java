@@ -62,6 +62,10 @@ public class UDPMainThread implements Runnable {
 
                     //Main method to process request in target server
                     Response response = process(targetServer, request);
+
+                    //TODO: uncomment this line for software failure simulation
+                    //response.setSuccess(false);
+
                     response.setReplica(REPLICA_NO);
 
                     //Send response to Frontend

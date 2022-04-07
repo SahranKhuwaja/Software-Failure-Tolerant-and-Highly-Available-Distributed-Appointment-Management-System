@@ -1,6 +1,8 @@
 package DAMS.Clients.Interfaces;
 
 
+import DAMS.Frontend.Interfaces.RemoteDistributedAppointmentFrontend;
+
 public interface ClientLookup {
 	public void lookup(String ip, int port, String serverName);
 	public boolean isAuthenticated(String userId);
@@ -46,4 +48,8 @@ public interface ClientLookup {
 	public void getNewAppointmentTypeForSwapping(String oldAppointmentID, String oldAppointmentType,
 			String newAppointmentType);
 	public void swapID(String id);
+
+	//Test client specific functions
+	RemoteDistributedAppointmentFrontend authenticateForTestAdmin(String serverName);
+
 }

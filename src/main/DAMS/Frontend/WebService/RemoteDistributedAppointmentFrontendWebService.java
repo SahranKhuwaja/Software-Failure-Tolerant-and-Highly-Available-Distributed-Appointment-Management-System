@@ -23,19 +23,18 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     String role;
     IPCRequest ipcRequest;
 
-    public RemoteDistributedAppointmentFrontendWebService(String path){
+    public RemoteDistributedAppointmentFrontendWebService(String path) {
         super();
         this.path = path;
         ipcRequest = new IPCRequest();
     }
 
-    public RemoteDistributedAppointmentFrontendWebService(){
-
-    }
-
     @Override
     public String generateId(String role) {
-        return role;
+        int min = 1;
+        int max = 9999;
+        int random_int = (int) Math.floor(Math.random() * (max - min + 1) + min);
+        return role.substring(0, 1) + random_int;
     }
 
     @Override
@@ -50,7 +49,7 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     @Override
     public boolean authenticateUser(String userID, String role) {
         boolean isValid = false;
-        this.serverCode = userID.substring(0,3);
+        this.serverCode = userID.substring(0, 3);
         this.userID = userID;
         this.role = role;
         if (role.equals("Admin")) {
@@ -69,7 +68,7 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
             prop.load(bR);
             bR.close();
             List<String> admins = Arrays.asList(
-                    prop.getProperty(serverCode).substring(1,prop.getProperty(serverCode).length()-1).trim().split(", "));
+                    prop.getProperty(serverCode).substring(1, prop.getProperty(serverCode).length() - 1).trim().split(", "));
             if (admins.contains(userId)) {
                 return true;
             }
@@ -89,7 +88,7 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
             prop.load(bR);
             bR.close();
             List<String> patients = Arrays.asList(
-                    prop.getProperty(serverCode).substring(1,prop.getProperty(serverCode).length()-1).trim().split(", "));
+                    prop.getProperty(serverCode).substring(1, prop.getProperty(serverCode).length() - 1).trim().split(", "));
             if (patients.contains(userId)) {
                 return true;
             }
@@ -112,7 +111,7 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     @Override
     public String[] getTimeSlots() {
 
-        Request request = new Request(serverCode, userID,"GetTimeSlots");
+        Request request = new Request(serverCode, userID, "GetTimeSlots");
         Response response = ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
         return response.getMessages();
     }
@@ -120,7 +119,7 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     @Override
     public String addAppointment(String appointmentID, String appointmentType, String appointmentDescription, int capacity) {
 
-        Request request = new Request(serverCode, userID,"AddAppointment", appointmentID, appointmentType, appointmentDescription, capacity);
+        Request request = new Request(serverCode, userID, "AddAppointment", appointmentID, appointmentType, appointmentDescription, capacity);
         Response response = ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
         return response.message();
     }
@@ -128,9 +127,9 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     @Override
     public ResponseWrapper viewAppointment(String appointmentType) {
         try {
-            Request request = new Request(serverCode, userID,"ViewAppointment", appointmentType);
+            Request request = new Request(serverCode, userID, "ViewAppointment", appointmentType);
             ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
         return null;
@@ -139,9 +138,9 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     @Override
     public String removeAppointment(String appointmentID, String appointmentType) {
         try {
-            Request request = new Request(serverCode, userID,"RemoveAppointment", appointmentID, appointmentType);
+            Request request = new Request(serverCode, userID, "RemoveAppointment", appointmentID, appointmentType);
             ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
         return null;
@@ -149,25 +148,25 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
 
     @Override
     public ResponseWrapper listAppointmentAvailability(String appointmentType) {
-        Request request = new Request(serverCode, userID,"ListAppointmentAvailability", appointmentType);
+        Request request = new Request(serverCode, userID, "ListAppointmentAvailability", appointmentType);
         Response response = ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
         return response.getResponseWrapper();
     }
 
     @Override
     public String bookAppointment(String patientID, String appointmentID, String appointmentType) {
-        Request request = new Request(serverCode, userID,"BookAppointment", patientID, appointmentID, appointmentType);
+        Request request = new Request(serverCode, userID, "BookAppointment", patientID, appointmentID, appointmentType);
         Response response = ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
         return response.message();
     }
 
     @Override
     public String[] getAppointmentSchedule(String patientID) {
-        Request request = new Request(serverCode, userID,"GetAppointmentSchedule", patientID, "","");
+        Request request = new Request(serverCode, userID, "GetAppointmentSchedule", patientID, "", "");
         System.out.println(patientID);
         Response response = ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
         System.out.println(response.getMessages().length);
-        for(String a : response.getMessages()){
+        for (String a : response.getMessages()) {
             System.out.println(a);
         }
         return response.getMessages();
@@ -176,9 +175,9 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     @Override
     public String cancelAppointment(String patientID, String appointmentID, String appointmentType) {
         try {
-            Request request = new Request(serverCode, userID,"CancelAppointment", patientID, appointmentID, appointmentType);
+            Request request = new Request(serverCode, userID, "CancelAppointment", patientID, appointmentID, appointmentType);
             ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
         return null;
@@ -187,9 +186,9 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     @Override
     public String swapAppointment(String patientID, String oldAppointmentID, String oldAppointmentType, String newAppointmentID, String newAppointmentType) {
         try {
-            Request request = new Request(serverCode, userID,"SwapAppointment", patientID, oldAppointmentID, oldAppointmentType, newAppointmentID, newAppointmentType);
+            Request request = new Request(serverCode, userID, "SwapAppointment", patientID, oldAppointmentID, oldAppointmentType, newAppointmentID, newAppointmentType);
             ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
         return null;

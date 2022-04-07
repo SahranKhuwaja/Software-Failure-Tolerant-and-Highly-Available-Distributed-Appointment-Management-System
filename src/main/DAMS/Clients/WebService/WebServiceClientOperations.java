@@ -130,6 +130,22 @@ public class WebServiceClientOperations implements ClientLookup {
 	}
 
 	@Override
+	public RemoteDistributedAppointmentFrontend authenticateForTestAdmin(String serverName) {
+		try {
+			serverCode = op.serverName.toUpperCase().split(" ")[1].replace("(", "").replace(")", "");
+			//userID = serverCode + rda.generateId(role);
+			userID = "MTLA2046";
+			rda.authenticateUser(userID, role);
+		    System.out.println("Server Response: You are successfully authenticated!");
+		    System.out.println("Logged in as: " + userID);
+		    this.setupLogs();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return rda;
+	}
+
+	@Override
 	public void authenticated(boolean isValid) {
 		logger.info("Server Response: You are connected to the " + op.serverName + " server!");
 		logger.info("Server Response: You are successfully authenticated!");
