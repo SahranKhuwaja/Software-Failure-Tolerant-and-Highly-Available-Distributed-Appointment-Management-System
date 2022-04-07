@@ -16,10 +16,10 @@ public class FaultTolerance {
 
     public static void main(String[] args){
         Response rep1 = new Response("AddAppointment","AddAppointment"
-                , true, "Success");
+                , false, "Success");
         rep1.setReplica(1);
         Response rep2 = new Response("AddAppointment","AddAppointment"
-                , false, "Success");
+                , true, "Success");
         rep2.setReplica(2);
         Response rep3 = new Response("AddAppointment","AddAppointment"
                 , true, "Success");
@@ -28,7 +28,7 @@ public class FaultTolerance {
                 , true, "Success");
         rep4.setReplica(4);
         List<Response> r = Arrays.asList(
-                rep1, rep2, rep3, rep4
+                rep1
         );
         FaultTolerance faultTolerance = new FaultTolerance(r);
         System.out.println(faultTolerance.detectSoftwareFailure().getReplica());
@@ -57,17 +57,11 @@ public class FaultTolerance {
         if(failedReplicas.size()==4){
             return replicaResponse;
         }
-        if(!failedReplicas.contains(responseQueue.get(0).getReplica())){
-            replicaResponse = responseQueue.get(0);
-        }
-        else if(!failedReplicas.contains(responseQueue.get(1).getReplica())){
-            replicaResponse = responseQueue.get(1);
-        }
-        else if(!failedReplicas.contains(responseQueue.get(2).getReplica())){
-            replicaResponse = responseQueue.get(2);
-        }
-        else if(!failedReplicas.contains(responseQueue.get(3).getReplica())){
-            replicaResponse = responseQueue.get(3);
+        for(int i = 0; i < responseQueue.size(); i++){
+            if(!failedReplicas.contains(responseQueue.get(i).getReplica())){
+                replicaResponse = responseQueue.get(i);
+                break;
+            }
         }
         return replicaResponse;
     }

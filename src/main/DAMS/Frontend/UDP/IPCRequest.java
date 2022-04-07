@@ -1,5 +1,6 @@
 package DAMS.Frontend.UDP;
 
+import DAMS.Frontend.FaultTolerance.FaultTolerance;
 import DAMS.Request.Request;
 import DAMS.Response.Response;
 
@@ -18,15 +19,10 @@ public class IPCRequest {
     ObjectOutputStream objectOutputStream;
     ByteArrayInputStream byteArrayInputStream;
     ObjectInputStream objectInputStream;
-    final String HOST_IP = "172.20.10.2";
-    final int PORT = 6481;
+    final String HOST_IP = "192.168.2.12";
+    final int PORT = 6821;
     List<Response> responseQueue;
-
-//    public static void main(String[] args) throws IOException {
-//        Request r = new Request("MTL","MTLA2046", "test");
-//        IPCRequest rr = new IPCRequest();
-//        rr.sendRequestToSequencerAndGetReplyFromFE(r);
-//    }
+    FaultTolerance faultTolerance;
 
     public IPCRequest(){
         responseQueue = new ArrayList<Response>();
@@ -42,13 +38,15 @@ public class IPCRequest {
             datagramSocket.send(requestPacket);
             datagramSocket = new DatagramSocket(6802);
 
-          //  while (responseQueue.size()!=1) {
+            while (responseQueue.size()!=1) {
                 byte[] replyBytes = new byte[2000];
                 DatagramPacket reply = new DatagramPacket(replyBytes, replyBytes.length);
                 datagramSocket.receive(reply);
                 replyFromRE = this.decodeMessage(reply);
                 responseQueue.add(replyFromRE);
-           // }
+           }
+            faultTolerance = new FaultTolerance(responseQueue);
+            replyFromRE = faultTolerance.detectSoftwareFailure();
             responseQueue.clear();
 
         } catch (SocketException e) {
