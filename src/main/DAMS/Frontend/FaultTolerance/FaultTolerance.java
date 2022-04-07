@@ -9,30 +9,13 @@ import java.util.stream.Collectors;
 public class FaultTolerance {
 
     List<Response> responseQueue;
+    List<Integer> allReplicas;
 
     public FaultTolerance(List<Response> responseQueue){
         this.responseQueue = responseQueue;
+        this.allReplicas = Arrays.asList(1, 2, 3, 4);
     }
 
-    public static void main(String[] args){
-        Response rep1 = new Response("AddAppointment","AddAppointment"
-                , false, "Success");
-        rep1.setReplica(1);
-        Response rep2 = new Response("AddAppointment","AddAppointment"
-                , true, "Success");
-        rep2.setReplica(2);
-        Response rep3 = new Response("AddAppointment","AddAppointment"
-                , true, "Success");
-        rep3.setReplica(3);
-        Response rep4 = new Response("AddAppointment","AddAppointment"
-                , true, "Success");
-        rep4.setReplica(4);
-        List<Response> r = Arrays.asList(
-                rep1
-        );
-        FaultTolerance faultTolerance = new FaultTolerance(r);
-        System.out.println(faultTolerance.detectSoftwareFailure().getReplica());
-    }
 
     public Response detectSoftwareFailure(){
         AtomicInteger index = new AtomicInteger(1);
@@ -64,6 +47,20 @@ public class FaultTolerance {
             }
         }
         return replicaResponse;
+    }
+
+    public void detectCrashFailure(){
+        List<Integer> receivedReplicas = responseQueue
+                .stream()
+                .map(el->el.getReplica())
+                .collect(Collectors.toList());
+
+        List<Integer> crashedReplicas =  allReplicas.stream()
+                .filter(e->!receivedReplicas.contains(e))
+                .collect(Collectors.toList());
+
+        System.out.println(crashedReplicas);
+
     }
 
     private boolean compare(Response r1, Response r2){
@@ -108,6 +105,7 @@ public class FaultTolerance {
                 });
         return detectedFailures;
     }
+
 
 
 

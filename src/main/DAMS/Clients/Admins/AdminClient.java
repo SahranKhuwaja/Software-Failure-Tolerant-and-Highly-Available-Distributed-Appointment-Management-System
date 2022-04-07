@@ -10,7 +10,6 @@ public class AdminClient {
 			String serverName = dT.askUserId();
 			WebServiceClientOperations op = new WebServiceClientOperations("Admin", dT);
 			op.lookup(dT.getIP(), dT.getPort(), serverName);
-			System.out.println();
 			if (Operations.userId != null) {
 				op.isAuthenticated(Operations.userId);
 			}
