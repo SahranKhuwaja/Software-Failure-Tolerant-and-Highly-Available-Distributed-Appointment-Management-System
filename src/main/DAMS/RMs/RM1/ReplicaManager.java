@@ -1,4 +1,4 @@
-package DAMS.RM;
+package DAMS.RMs.RM1;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,14 +11,10 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 import java.util.PriorityQueue;
 
 import DAMS.Notification.Notification;
-import DAMS.Replicas.Replica1.AppointmentSlots.AppointmentSlot;
-import DAMS.Replicas.Replica2.server.domain.Appointment;
 import DAMS.Request.Request;
 
 public class ReplicaManager implements Runnable {
@@ -28,10 +24,12 @@ public class ReplicaManager implements Runnable {
 
     // TODO: port to receive failure notification
     private final int failureDetectionPort = 1999;
+    private final int recoverDataPort = 2999;
 
     // TODO: ip address and port of local replica manager
-    private final String localReplicaManagerIp = "X.X.X.X";
-    private final int localReplicaManagerPort = 9999;
+    private final int thisReplicaId = 0;
+    private final String[] localRmIps = { "X.X.X.X", "X.X.X.X", "X.X.X.X", "X.X.X.X" };
+    private final int[] localRmPorts = { 6921, 6922, 6923, 6924};
 
     private final PriorityQueue<Request> holdBackQueue;
 
@@ -63,7 +61,7 @@ public class ReplicaManager implements Runnable {
                 DatagramPacket notificationPacket = new DatagramPacket(
                         notificationBytes,
                         notificationBytes.length,
-                        new InetSocketAddress(localReplicaManagerIp, localReplicaManagerPort));
+                        new InetSocketAddress(localRmIps[thisReplicaId], localRmPorts[thisReplicaId]));
                 try {
                     forwardNotificationSocket.send(notificationPacket);
                 } catch (IOException e) {
@@ -167,8 +165,21 @@ public class ReplicaManager implements Runnable {
     }
 
     // TODO:
-    private HashMap<String, HashMap<String, AppointmentSlot>> getAllDataFromReplica(int replica) {
+    private byte[] getAllDataFromReplica(int replica) {
+        try {
+            DatagramSocket udpSocket = new DatagramSocket(recoverDataPort);
+            byte[] buf = new byte[32767];
+            DatagramPacket requestPacket = new DatagramPacket(buf, buf.length, new InetSocketAddress(localRmIps[replica], localRmPorts[replica]));
+            udpSocket.send(requestPacket);
+            DatagramPacket responsePacket = new DatagramPacket(buf, buf.length);
+            udpSocket.receive(responsePacket);
+            return responsePacket.getData();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
+
     }
 
 }
