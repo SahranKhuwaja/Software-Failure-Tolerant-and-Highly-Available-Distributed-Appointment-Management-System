@@ -11,7 +11,7 @@ public class StartMTL {
 
     public static void main(String[] args){
         String serverName = "Montreal (MTL)";
-        int port  = 6481;
+        int port  = 6821;
         MontrealImpl MTL = new MontrealImpl();
         try {
             DatagramSocket datagramSocket = null;

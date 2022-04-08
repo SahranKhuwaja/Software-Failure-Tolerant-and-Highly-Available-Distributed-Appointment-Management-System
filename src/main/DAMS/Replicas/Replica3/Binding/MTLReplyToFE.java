@@ -23,7 +23,7 @@ public class MTLReplyToFE extends Thread{
     ObjectInputStream objectInputStream;
     ByteArrayOutputStream byteArrayOutputStream;
     ObjectOutputStream objectOutputStream;
-    final String HOST_IP = "172.20.10.2";
+    final String HOST_IP = "192.168.2.12";
     final int PORT = 6802;
 
 
@@ -126,6 +126,7 @@ public class MTLReplyToFE extends Thread{
             case "ListAppointmentAvailability":
                 message = MTL.listAppointmentAvailability(request.getAppointmentType().toUpperCase());
                 success = message.length()!=0?true:false;
+                System.out.println(message);
                 ResponseWrapper rw = new ResponseWrapper();
                 rw.setMessage(message);
                 rw.setReplica(3);

@@ -75,7 +75,6 @@ public class FaultTolerance {
 
     private boolean compare(Response r1, Response r2){
         boolean response = false;
-
         switch (r1.methodName()){
             case "GetAppointmentTypes":
             case "GetTimeSlots":

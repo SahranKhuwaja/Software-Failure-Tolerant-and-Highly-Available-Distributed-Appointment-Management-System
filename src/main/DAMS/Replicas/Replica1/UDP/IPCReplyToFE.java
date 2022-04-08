@@ -108,6 +108,7 @@ public class IPCReplyToFE extends Thread implements UDPReplyToFE {
                 break;
             case "ViewAppointment":
                 responseWrapper = rda.viewAppointment(request.getAppointmentType());
+                responseWrapper.setReplica(REPLICA);
                 success = responseWrapper.getData()!=null?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, responseWrapper);
                 break;
@@ -118,6 +119,7 @@ public class IPCReplyToFE extends Thread implements UDPReplyToFE {
                 break;
             case "ListAppointmentAvailability":
                 responseWrapper = rda.listAppointmentAvailability(request.getAppointmentType());
+                responseWrapper.setReplica(REPLICA);
                 success = responseWrapper.getData()!=null?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, responseWrapper);
                 break;

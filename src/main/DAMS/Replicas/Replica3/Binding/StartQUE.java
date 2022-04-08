@@ -9,7 +9,7 @@ public class StartQUE {
 
     public static void main(String[] args){
         String serverName = "Quebec (QUE)";
-        int port  = 6482;
+        int port  = 6822;
         QuebecImpl QUE = new QuebecImpl();
         try {
             DatagramSocket datagramSocket = null;

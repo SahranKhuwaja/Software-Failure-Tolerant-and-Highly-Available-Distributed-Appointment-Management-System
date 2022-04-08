@@ -24,7 +24,7 @@ public class IPCReplyToFE extends Thread implements UDPReplyToFE {
     ObjectOutputStream objectOutputStream;
     final String HOST_IP = "192.168.2.12";
     final int PORT = 6802;
-    final int REPLICA = 1;
+    final int REPLICA = 4;
 
     public IPCReplyToFE(DatagramSocket datagramSocket, String serverName, int port, RemoteDistributedAppointment rda) {
         this.datagramSocket = datagramSocket;
@@ -108,6 +108,7 @@ public class IPCReplyToFE extends Thread implements UDPReplyToFE {
                 break;
             case "ViewAppointment":
                 responseWrapper = rda.viewAppointment(request.getAppointmentType());
+                responseWrapper.setReplica(REPLICA);
                 success = responseWrapper.getData()!=null?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, responseWrapper);
                 break;
@@ -118,6 +119,7 @@ public class IPCReplyToFE extends Thread implements UDPReplyToFE {
                 break;
             case "ListAppointmentAvailability":
                 responseWrapper = rda.listAppointmentAvailability(request.getAppointmentType());
+                responseWrapper.setReplica(REPLICA);
                 success = responseWrapper.getData()!=null?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, responseWrapper);
                 break;

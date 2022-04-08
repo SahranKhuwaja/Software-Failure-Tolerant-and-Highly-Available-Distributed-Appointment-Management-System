@@ -26,7 +26,7 @@ public class QUEReplyToFE extends Thread{
     ByteArrayOutputStream byteArrayOutputStream;
     ObjectOutputStream objectOutputStream;
     final String HOST_IP = "192.168.2.12";
-    final int PORT = 6821;
+    final int PORT = 6802;
 
 
     public QUEReplyToFE(DatagramSocket datagramSocket, String serverName, int port, QuebecImpl rda) {
@@ -107,7 +107,6 @@ public class QUEReplyToFE extends Thread{
                 success = messages.length!=0?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, messages);
                 break;
-
             case "GetTimeSlots":
                 messages = QUE.getTimeSlots();
                 success = messages.length!=0?true:false;
@@ -115,49 +114,52 @@ public class QUEReplyToFE extends Thread{
                 break;
 
             case "AddAppointment":
-                message = QUE.addAppointment(request.getAppointmentID(), request.getAppointmentType(), request.getCapacity());
+                message = QUE.addAppointment(request.getAppointmentID().toUpperCase(), request.getAppointmentType().substring(0,1).toUpperCase(), request.getCapacity());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
 
             case "RemoveAppointment":
-                message = QUE.removeAppointment(request.getAppointmentID(), request.getAppointmentType());
+                message = QUE.removeAppointment(request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "ListAppointmentAvailability":
-                message = QUE.listAppointmentAvailability(request.getAppointmentType());
+                message = QUE.listAppointmentAvailability(request.getAppointmentType().toUpperCase());
                 success = message.length()!=0?true:false;
-                response = new Response(request.getOperation(), request.getOperation(), success, message);
+                ResponseWrapper rw = new ResponseWrapper();
+                rw.setMessage(message);
+                rw.setReplica(3);
+                response = new Response(request.getOperation(), request.getOperation(), success, rw);
                 break;
 
             case "BookAppointment":
-                message = QUE.bookAppointment(request.getPatientID(),request.getAppointmentID(), request.getAppointmentType());
+                message = QUE.bookAppointment(request.getPatientID().toUpperCase(),request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "GetAppointmentSchedule":
-                message = QUE.getAppointmentSchedule(request.getPatientID());
+                message = QUE.getAppointmentSchedule(request.getPatientID().toUpperCase());
                 success = message.length()!=0?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "CancelAppointment":
-                message = QUE.cancelAppointment(request.getPatientID(), request.getAppointmentID(), request.getAppointmentType());
+                message = QUE.cancelAppointment(request.getPatientID().toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "SwapAppointment":
-                message = QUE.swapAppointment(request.getPatientID(),request.getOldAppointmentID(), request.getOldAppointmentType(), request.getAppointmentID(), request.getAppointmentType());
+                message = QUE.swapAppointment(request.getPatientID().toUpperCase(),request.getOldAppointmentID().toUpperCase(), request.getOldAppointmentType().toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
         }
-
+        response.setReplica(3);
         return response;
 
     }

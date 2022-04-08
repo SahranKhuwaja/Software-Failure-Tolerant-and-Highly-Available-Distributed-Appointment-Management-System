@@ -25,7 +25,7 @@ public class SHEReplyToFE extends Thread{
     ByteArrayOutputStream byteArrayOutputStream;
     ObjectOutputStream objectOutputStream;
     final String HOST_IP = "192.168.2.12";
-    final int PORT = 6821;
+    final int PORT = 6802;
 
 
     public SHEReplyToFE(DatagramSocket datagramSocket, String serverName, int port, SherbrookeImpl rda) {
@@ -112,49 +112,52 @@ public class SHEReplyToFE extends Thread{
                 break;
 
             case "AddAppointment":
-                message = SHE.addAppointment(request.getAppointmentID(), request.getAppointmentType(), request.getCapacity());
+                message = SHE.addAppointment(request.getAppointmentID().toUpperCase(), request.getAppointmentType().substring(0,1).toUpperCase(), request.getCapacity());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
 
             case "RemoveAppointment":
-                message = SHE.removeAppointment(request.getAppointmentID(), request.getAppointmentType());
+                message = SHE.removeAppointment(request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "ListAppointmentAvailability":
-                message = SHE.listAppointmentAvailability(request.getAppointmentType());
+                message = SHE.listAppointmentAvailability(request.getAppointmentType().toUpperCase());
                 success = message.length()!=0?true:false;
-                response = new Response(request.getOperation(), request.getOperation(), success, message);
+                ResponseWrapper rw = new ResponseWrapper();
+                rw.setMessage(message);
+                rw.setReplica(3);
+                response = new Response(request.getOperation(), request.getOperation(), success, rw);
                 break;
 
             case "BookAppointment":
-                message = SHE.bookAppointment(request.getPatientID(),request.getAppointmentID(), request.getAppointmentType());
+                message = SHE.bookAppointment(request.getPatientID().toUpperCase(),request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "GetAppointmentSchedule":
-                message = SHE.getAppointmentSchedule(request.getPatientID());
+                message = SHE.getAppointmentSchedule(request.getPatientID().toUpperCase());
                 success = message.length()!=0?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "CancelAppointment":
-                message = SHE.cancelAppointment(request.getPatientID(), request.getAppointmentID(), request.getAppointmentType());
+                message = SHE.cancelAppointment(request.getPatientID().toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "SwapAppointment":
-                message = SHE.swapAppointment(request.getPatientID(),request.getOldAppointmentID(), request.getOldAppointmentType(), request.getAppointmentID(), request.getAppointmentType());
+                message = SHE.swapAppointment(request.getPatientID().toUpperCase(),request.getOldAppointmentID().toUpperCase(), request.getOldAppointmentType().toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
         }
-
+        response.setReplica(3);
         return response;
 
     }

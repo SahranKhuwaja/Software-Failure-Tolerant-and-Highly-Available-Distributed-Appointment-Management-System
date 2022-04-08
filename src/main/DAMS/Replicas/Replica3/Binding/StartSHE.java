@@ -9,7 +9,7 @@ public class StartSHE {
 
     public static void main(String[] args){
         String serverName = "Sherbrooke (SHE)";
-        int port  = 6483;
+        int port  = 6823;
         SherbrookeImpl SHE = new SherbrookeImpl();
         try {
             DatagramSocket datagramSocket = null;
