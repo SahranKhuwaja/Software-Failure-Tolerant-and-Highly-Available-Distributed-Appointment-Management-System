@@ -1,0 +1,55 @@
+2022/04/08 16:01:32 Inter Server Request Received at Sherbrooke Server 
+2022/04/08 16:01:32 Data From other server type app,P,
+2022/04/08 16:01:32 List Availability Request 
+2022/04/08 16:01:32 Sent Response back to server SHEA200222 3 
+
+2022/04/08 16:09:49 Inter Server Request Received at Sherbrooke Server 
+2022/04/08 16:09:49 Data From other server type app,P,
+2022/04/08 16:09:49 List Availability Request 
+2022/04/08 16:09:49 Sent Response back to server SHEA200222 3 
+
+2022/04/08 16:09:49 Inter Server Request Received at Sherbrooke Server 
+2022/04/08 16:09:49 Data From other server type app,P,
+2022/04/08 16:09:49 List Availability Request 
+2022/04/08 16:09:49 Sent Response back to server SHEA200222 3 
+
+2022/04/08 16:09:49 Inter Server Request Received at Sherbrooke Server 
+2022/04/08 16:09:49 Data From other server type app,P,
+2022/04/08 16:09:49 List Availability Request 
+2022/04/08 16:09:49 Sent Response back to server SHEA200222 3 
+
+2022/04/08 16:18:28 Inter Server Request Received at Sherbrooke Server 
+2022/04/08 16:18:28 Data From other server type app,P,
+2022/04/08 16:18:28 List Availability Request 
+2022/04/08 16:18:28 Sent Response back to server SHEA200222 3 
+
+2022/04/08 16:18:28 Inter Server Request Received at Sherbrooke Server 
+2022/04/08 16:18:28 Data From other server type app,P,
+2022/04/08 16:18:28 List Availability Request 
+2022/04/08 16:18:28 Sent Response back to server SHEA200222 3 
+
+2022/04/08 16:18:28 Inter Server Request Received at Sherbrooke Server 
+2022/04/08 16:18:28 Data From other server type app,P,
+2022/04/08 16:18:28 List Availability Request 
+2022/04/08 16:18:28 Sent Response back to server SHEA200222 3 
+
+2022/04/08 16:18:28 Inter Server Request Received at Sherbrooke Server 
+2022/04/08 16:18:28 Data From other server type app,P,
+2022/04/08 16:18:28 List Availability Request 
+2022/04/08 16:18:28 Sent Response back to server SHEA200222 3 
+
+2022/04/08 16:18:28 Inter Server Request Received at Sherbrooke Server 
+2022/04/08 16:18:28 Data From other server type app,P,
+2022/04/08 16:18:28 List Availability Request 
+2022/04/08 16:18:28 Sent Response back to server SHEA200222 3 
+
+2022/04/08 16:31:13 Inter Server Request Received at Sherbrooke Server 
+2022/04/08 16:31:13 Data From other server type app,P,
+2022/04/08 16:31:13 List Availability Request 
+2022/04/08 16:31:13 Sent Response back to server SHEA200222 3 
+
+2022/04/08 16:31:13 Inter Server Request Received at Sherbrooke Server 
+2022/04/08 16:31:13 Data From other server type app,P,
+2022/04/08 16:31:13 List Availability Request 
+2022/04/08 16:31:13 Sent Response back to server SHEA200222 3 
+

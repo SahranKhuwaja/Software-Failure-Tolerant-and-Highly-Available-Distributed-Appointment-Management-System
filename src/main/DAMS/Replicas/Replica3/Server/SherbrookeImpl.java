@@ -66,7 +66,7 @@ public class SherbrookeImpl implements HospitalInterface{
         BufferedWriter output = null;
         try {
             String path  = System.getProperty("user.dir");
-            myObj = new File(path + "/src/main/DAMS/Replica3/logs/SHEServerLogs.txt");
+            myObj = new File(path + "/src/main/DAMS/Replicas/Replica3/logs/SHEServerLogs.txt");
 
             if (myObj.createNewFile()) {
                 System.out.println("Log File created: " + myObj.getName());

@@ -22,3 +22,140 @@
 2022/04/06 15:13:13 Data From Client appointmentID MTLE124534 appointmentType P Capacity 3
 2022/04/06 15:13:13 Appointment added Successfully 
 
+2022/04/08 16:01:28Request for View Appointment Details Received at Montreal Server
+2022/04/08 16:01:28 Data From Client appointmentType P
+2022/04/08 16:01:28Appointment Details from Montreal ServerMTLA200222 3 
+2022/04/08 16:01:28 Calling Quebec server from Montreal Server for Appointment Details 
+2022/04/08 16:01:28 Appointment Details from Quebec Server QUEA200222 3
+2022/04/08 16:01:28 Calling Sherbrooke server from Montreal Server for Appointment Details 
+2022/04/08 16:01:28Appointment Details from Sherbrooke ServerSHEA200222 3
+2022/04/08 16:01:28Appointment from all the serversMTLA200222 3 QUEA200222 3SHEA200222 3
+
+2022/04/08 16:09:43Request for View Appointment Details Received at Montreal Server
+2022/04/08 16:09:43 Data From Client appointmentType P
+2022/04/08 16:09:43Appointment Details from Montreal ServerMTLA200222 3 
+2022/04/08 16:09:43 Calling Quebec server from Montreal Server for Appointment Details 
+2022/04/08 16:09:43 Appointment Details from Quebec Server QUEA200222 3
+2022/04/08 16:09:43 Calling Sherbrooke server from Montreal Server for Appointment Details 
+2022/04/08 16:09:43Appointment Details from Sherbrooke ServerSHEA200222 3
+2022/04/08 16:09:43Appointment from all the serversMTLA200222 3 QUEA200222 3SHEA200222 3
+
+2022/04/08 16:09:43Request for View Appointment Details Received at Montreal Server
+2022/04/08 16:09:43 Data From Client appointmentType P
+2022/04/08 16:09:43Appointment Details from Montreal ServerMTLA200222 3 
+2022/04/08 16:09:43 Calling Quebec server from Montreal Server for Appointment Details 
+2022/04/08 16:09:43 Appointment Details from Quebec Server QUEA200222 3
+2022/04/08 16:09:43 Calling Sherbrooke server from Montreal Server for Appointment Details 
+2022/04/08 16:09:43Appointment Details from Sherbrooke ServerSHEA200222 3
+2022/04/08 16:09:43Appointment from all the serversMTLA200222 3 QUEA200222 3SHEA200222 3
+
+2022/04/08 16:09:43Request for View Appointment Details Received at Montreal Server
+2022/04/08 16:09:43 Data From Client appointmentType P
+2022/04/08 16:09:43Appointment Details from Montreal ServerMTLA200222 3 
+2022/04/08 16:09:43 Calling Quebec server from Montreal Server for Appointment Details 
+2022/04/08 16:09:43 Appointment Details from Quebec Server QUEA200222 3
+2022/04/08 16:09:43 Calling Sherbrooke server from Montreal Server for Appointment Details 
+2022/04/08 16:09:43Appointment Details from Sherbrooke ServerSHEA200222 3
+2022/04/08 16:09:43Appointment from all the serversMTLA200222 3 QUEA200222 3SHEA200222 3
+
+2022/04/08 16:18:24Request for View Appointment Details Received at Montreal Server
+2022/04/08 16:18:24 Data From Client appointmentType P
+2022/04/08 16:18:24Appointment Details from Montreal ServerMTLA200222 3 
+2022/04/08 16:18:24 Calling Quebec server from Montreal Server for Appointment Details 
+2022/04/08 16:18:24 Appointment Details from Quebec Server QUEA200222 3
+2022/04/08 16:18:24 Calling Sherbrooke server from Montreal Server for Appointment Details 
+2022/04/08 16:18:24Appointment Details from Sherbrooke ServerSHEA200222 3
+2022/04/08 16:18:24Appointment from all the serversMTLA200222 3 QUEA200222 3SHEA200222 3
+
+2022/04/08 16:18:24Request for View Appointment Details Received at Montreal Server
+2022/04/08 16:18:24 Data From Client appointmentType P
+2022/04/08 16:18:24Appointment Details from Montreal ServerMTLA200222 3 
+2022/04/08 16:18:24 Calling Quebec server from Montreal Server for Appointment Details 
+2022/04/08 16:18:24 Appointment Details from Quebec Server QUEA200222 3
+2022/04/08 16:18:24 Calling Sherbrooke server from Montreal Server for Appointment Details 
+2022/04/08 16:18:24Appointment Details from Sherbrooke ServerSHEA200222 3
+2022/04/08 16:18:24Appointment from all the serversMTLA200222 3 QUEA200222 3SHEA200222 3
+
+2022/04/08 16:18:24Request for View Appointment Details Received at Montreal Server
+2022/04/08 16:18:24 Data From Client appointmentType P
+2022/04/08 16:18:24Appointment Details from Montreal ServerMTLA200222 3 
+2022/04/08 16:18:24 Calling Quebec server from Montreal Server for Appointment Details 
+2022/04/08 16:18:24 Appointment Details from Quebec Server QUEA200222 3
+2022/04/08 16:18:24 Calling Sherbrooke server from Montreal Server for Appointment Details 
+2022/04/08 16:18:24Appointment Details from Sherbrooke ServerSHEA200222 3
+2022/04/08 16:18:24Appointment from all the serversMTLA200222 3 QUEA200222 3SHEA200222 3
+
+2022/04/08 16:22:06 Request for Get Appointment Schedule Received at Montreal Server 
+2022/04/08 16:22:06 Data From Client Patient ID MTLP1234
+2022/04/08 16:22:06Appointment ScheduleQUEA200222 P MTLA220222 D SHEA220222 D SHEA200222 P 
+
+2022/04/08 16:22:06Request for View Appointment Details Received at Montreal Server
+2022/04/08 16:22:06 Data From Client appointmentType P
+2022/04/08 16:22:06Appointment Details from Montreal ServerMTLA200222 3 
+2022/04/08 16:22:06 Calling Quebec server from Montreal Server for Appointment Details 
+2022/04/08 16:22:06 Appointment Details from Quebec Server QUEA200222 3
+2022/04/08 16:22:06 Calling Sherbrooke server from Montreal Server for Appointment Details 
+2022/04/08 16:22:06Appointment Details from Sherbrooke ServerSHEA200222 3
+2022/04/08 16:22:06Appointment from all the serversMTLA200222 3 QUEA200222 3SHEA200222 3
+
+2022/04/08 16:22:06Request for View Appointment Details Received at Montreal Server
+2022/04/08 16:22:06 Data From Client appointmentType P
+2022/04/08 16:22:06Appointment Details from Montreal ServerMTLA200222 3 
+2022/04/08 16:22:06 Calling Quebec server from Montreal Server for Appointment Details 
+2022/04/08 16:22:06 Appointment Details from Quebec Server QUEA200222 3
+2022/04/08 16:22:06 Calling Sherbrooke server from Montreal Server for Appointment Details 
+2022/04/08 16:22:06Appointment Details from Sherbrooke ServerSHEA200222 3
+2022/04/08 16:22:06Appointment from all the serversMTLA200222 3 QUEA200222 3SHEA200222 3
+
+2022/04/08 16:22:06 Request for Book Appointment Received at Montreal Server 
+2022/04/08 16:22:06 Data From Client Patient ID MTLP2046 AppointmentID MTLA200222 Appointment Type P
+2022/04/08 16:22:06 Book Appointment at Montreal Server 
+2022/04/08 16:22:06 Appointment Booked Successfully 
+
+2022/04/08 16:22:06 Request for Get Appointment Schedule Received at Montreal Server 
+2022/04/08 16:22:06 Data From Client Patient ID MTLP2046
+2022/04/08 16:22:06Appointment ScheduleMTLA200222 P 
+
+2022/04/08 16:22:06 Request for Get Appointment Schedule Received at Montreal Server 
+2022/04/08 16:22:06 Data From Client Patient ID MTLP2046
+2022/04/08 16:22:06Appointment ScheduleMTLA200222 P 
+
+2022/04/08 16:31:07 Request for Get Appointment Schedule Received at Montreal Server 
+2022/04/08 16:31:07 Data From Client Patient ID MTLP1234
+2022/04/08 16:31:07Appointment ScheduleQUEA200222 P MTLA220222 D SHEA220222 D SHEA200222 P 
+
+2022/04/08 16:31:07 Request for Get Appointment Schedule Received at Montreal Server 
+2022/04/08 16:31:07 Data From Client Patient ID MTLP1234
+2022/04/08 16:31:07Appointment ScheduleQUEA200222 P MTLA220222 D SHEA220222 D SHEA200222 P 
+
+2022/04/08 16:31:07Request for View Appointment Details Received at Montreal Server
+2022/04/08 16:31:07 Data From Client appointmentType P
+2022/04/08 16:31:07Appointment Details from Montreal ServerMTLA200222 3 
+2022/04/08 16:31:07 Calling Quebec server from Montreal Server for Appointment Details 
+2022/04/08 16:31:07 Appointment Details from Quebec Server QUEA200222 3
+2022/04/08 16:31:07 Calling Sherbrooke server from Montreal Server for Appointment Details 
+2022/04/08 16:31:07Appointment Details from Sherbrooke ServerSHEA200222 3
+2022/04/08 16:31:07Appointment from all the serversMTLA200222 3 QUEA200222 3SHEA200222 3
+
+2022/04/08 16:31:07Request for View Appointment Details Received at Montreal Server
+2022/04/08 16:31:07 Data From Client appointmentType P
+2022/04/08 16:31:07Appointment Details from Montreal ServerMTLA200222 3 
+2022/04/08 16:31:07 Calling Quebec server from Montreal Server for Appointment Details 
+2022/04/08 16:31:07 Appointment Details from Quebec Server QUEA200222 3
+2022/04/08 16:31:07 Calling Sherbrooke server from Montreal Server for Appointment Details 
+2022/04/08 16:31:07Appointment Details from Sherbrooke ServerSHEA200222 3
+2022/04/08 16:31:07Appointment from all the serversMTLA200222 3 QUEA200222 3SHEA200222 3
+
+2022/04/08 16:31:07 Request for Book Appointment Received at Montreal Server 
+2022/04/08 16:31:07 Data From Client Patient ID MTLP2046 AppointmentID MTLA200222 Appointment Type P
+2022/04/08 16:31:07 Book Appointment at Montreal Server 
+2022/04/08 16:31:07 Appointment Booked Successfully 
+
+2022/04/08 16:31:07 Request for Get Appointment Schedule Received at Montreal Server 
+2022/04/08 16:31:07 Data From Client Patient ID MTLP2046
+2022/04/08 16:31:07Appointment ScheduleMTLA200222 P 
+
+2022/04/08 16:31:07 Request for Get Appointment Schedule Received at Montreal Server 
+2022/04/08 16:31:07 Data From Client Patient ID MTLP2046
+2022/04/08 16:31:07Appointment ScheduleMTLA200222 P 
+

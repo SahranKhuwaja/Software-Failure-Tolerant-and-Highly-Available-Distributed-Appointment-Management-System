@@ -10,6 +10,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
+import java.sql.SQLOutput;
+import java.util.HashMap;
 
 
 public class MTLReplyToFE extends Thread{
@@ -23,7 +25,7 @@ public class MTLReplyToFE extends Thread{
     ObjectInputStream objectInputStream;
     ByteArrayOutputStream byteArrayOutputStream;
     ObjectOutputStream objectOutputStream;
-    final String HOST_IP = "192.168.2.12";
+    final String HOST_IP = "172.20.10.2";
     final int PORT = 6802;
 
 
@@ -47,7 +49,9 @@ public class MTLReplyToFE extends Thread{
                 byte[] requestBytes = new byte[2000];
                 DatagramPacket request = new DatagramPacket(requestBytes, requestBytes.length);
                 datagramSocket.receive(request);
+                System.out.println("received");
                 Request requestFromFE = this.decodeMessage(request);
+                System.out.println(requestFromFE.getOperation());
                 Response wrappedMessage = this.wrapMessage(requestFromFE);
                 byte[] replyBytes = this.encodeToByteArray(wrappedMessage);
                 InetSocketAddress ip = new InetSocketAddress(HOST_IP, PORT);
@@ -126,9 +130,11 @@ public class MTLReplyToFE extends Thread{
             case "ListAppointmentAvailability":
                 message = MTL.listAppointmentAvailability(request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.length()!=0?true:false;
+                HashMap<String, String> hm = new HashMap<>();
                 System.out.println(message);
                 ResponseWrapper rw = new ResponseWrapper();
-                rw.setMessage(message);
+                hm.put("Data", message);
+                rw.setData(hm);
                 rw.setReplica(3);
                 response = new Response(request.getOperation(), request.getOperation(), success, rw);
                 break;
@@ -142,7 +148,11 @@ public class MTLReplyToFE extends Thread{
             case "GetAppointmentSchedule":
                 message = MTL.getAppointmentSchedule(request.getPatientID().toUpperCase());
                 success = message.length()!=0?true:false;
-                response = new Response(request.getOperation(), request.getOperation(), success, message);
+                String[] x = new String[2];
+                x[0] = message;
+                x[1] = "Replica3";
+                messages = x;
+                response = new Response(request.getOperation(), request.getOperation(), success, messages);
                 break;
 
             case "CancelAppointment":

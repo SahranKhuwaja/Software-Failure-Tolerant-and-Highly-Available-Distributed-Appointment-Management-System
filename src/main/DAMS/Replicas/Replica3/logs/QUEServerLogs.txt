@@ -1,0 +1,60 @@
+2022/04/08 15:51:50 Inter Server Request Received at Quebec Server 
+2022/04/08 15:51:50 Data From other server type app,P,
+2022/04/08 15:51:50 List Availability Request 
+2022/04/08 15:51:50 Sent Response back to server QUEA200222 3 
+
+2022/04/08 15:51:50 Inter Server Request Received at Quebec Server 
+2022/04/08 15:51:50 Data From other server type app,P,
+2022/04/08 15:51:50 List Availability Request 
+2022/04/08 15:51:50 Sent Response back to server QUEA200222 3 
+
+2022/04/08 16:09:46 Inter Server Request Received at Quebec Server 
+2022/04/08 16:09:46 Data From other server type app,P,
+2022/04/08 16:09:46 List Availability Request 
+2022/04/08 16:09:46 Sent Response back to server QUEA200222 3 
+
+2022/04/08 16:09:46 Inter Server Request Received at Quebec Server 
+2022/04/08 16:09:46 Data From other server type app,P,
+2022/04/08 16:09:46 List Availability Request 
+2022/04/08 16:09:46 Sent Response back to server QUEA200222 3 
+
+2022/04/08 16:09:46 Inter Server Request Received at Quebec Server 
+2022/04/08 16:09:46 Data From other server type app,P,
+2022/04/08 16:09:46 List Availability Request 
+2022/04/08 16:09:46 Sent Response back to server QUEA200222 3 
+
+2022/04/08 16:18:34 Inter Server Request Received at Quebec Server 
+2022/04/08 16:18:34 Data From other server type app,P,
+2022/04/08 16:18:34 List Availability Request 
+2022/04/08 16:18:34 Sent Response back to server QUEA200222 3 
+
+2022/04/08 16:18:34 Inter Server Request Received at Quebec Server 
+2022/04/08 16:18:34 Data From other server type app,P,
+2022/04/08 16:18:34 List Availability Request 
+2022/04/08 16:18:34 Sent Response back to server QUEA200222 3 
+
+2022/04/08 16:18:34 Inter Server Request Received at Quebec Server 
+2022/04/08 16:18:34 Data From other server type app,P,
+2022/04/08 16:18:34 List Availability Request 
+2022/04/08 16:18:34 Sent Response back to server QUEA200222 3 
+
+2022/04/08 16:18:34 Inter Server Request Received at Quebec Server 
+2022/04/08 16:18:34 Data From other server type app,P,
+2022/04/08 16:18:34 List Availability Request 
+2022/04/08 16:18:34 Sent Response back to server QUEA200222 3 
+
+2022/04/08 16:18:34 Inter Server Request Received at Quebec Server 
+2022/04/08 16:18:34 Data From other server type app,P,
+2022/04/08 16:18:34 List Availability Request 
+2022/04/08 16:18:34 Sent Response back to server QUEA200222 3 
+
+2022/04/08 16:31:10 Inter Server Request Received at Quebec Server 
+2022/04/08 16:31:10 Data From other server type app,P,
+2022/04/08 16:31:10 List Availability Request 
+2022/04/08 16:31:10 Sent Response back to server QUEA200222 3 
+
+2022/04/08 16:31:10 Inter Server Request Received at Quebec Server 
+2022/04/08 16:31:10 Data From other server type app,P,
+2022/04/08 16:31:10 List Availability Request 
+2022/04/08 16:31:10 Sent Response back to server QUEA200222 3 
+

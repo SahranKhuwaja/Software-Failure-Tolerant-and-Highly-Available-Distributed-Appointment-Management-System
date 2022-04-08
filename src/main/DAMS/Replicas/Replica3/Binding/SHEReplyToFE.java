@@ -10,6 +10,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
+import java.util.HashMap;
 
 
 public class SHEReplyToFE extends Thread{
@@ -24,7 +25,7 @@ public class SHEReplyToFE extends Thread{
     ObjectInputStream objectInputStream;
     ByteArrayOutputStream byteArrayOutputStream;
     ObjectOutputStream objectOutputStream;
-    final String HOST_IP = "192.168.2.12";
+    final String HOST_IP = "172.20.10.2";
     final int PORT = 6802;
 
 
@@ -127,8 +128,11 @@ public class SHEReplyToFE extends Thread{
             case "ListAppointmentAvailability":
                 message = SHE.listAppointmentAvailability(request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.length()!=0?true:false;
+                HashMap<String, String> hm = new HashMap<>();
+                System.out.println(message);
                 ResponseWrapper rw = new ResponseWrapper();
-                rw.setMessage(message);
+                hm.put("Data", message);
+                rw.setData(hm);
                 rw.setReplica(3);
                 response = new Response(request.getOperation(), request.getOperation(), success, rw);
                 break;
@@ -142,7 +146,11 @@ public class SHEReplyToFE extends Thread{
             case "GetAppointmentSchedule":
                 message = SHE.getAppointmentSchedule(request.getPatientID().toUpperCase());
                 success = message.length()!=0?true:false;
-                response = new Response(request.getOperation(), request.getOperation(), success, message);
+                String[] x = new String[2];
+                x[0] = message;
+                x[1] = "Replica3";
+                messages = x;
+                response = new Response(request.getOperation(), request.getOperation(), success, messages);
                 break;
 
             case "CancelAppointment":
