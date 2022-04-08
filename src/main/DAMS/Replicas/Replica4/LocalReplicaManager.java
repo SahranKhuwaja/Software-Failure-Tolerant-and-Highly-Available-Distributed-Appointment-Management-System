@@ -6,12 +6,12 @@ import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
-import java.util.List;
+import java.util.HashMap;
 
-import DAMS.Notification.Notification;
-import DAMS.Replicas.Replica4.Servers.MontrealServer;
-import DAMS.Replicas.Replica4.Servers.QuebecServer;
-import DAMS.Replicas.Replica4.Servers.SherbrookeServer;
+import DAMS.Replicas.Replica1.AppointmentSlots.AppointmentSlot;
+import DAMS.Replicas.Replica1.Servers.MontrealServer;
+import DAMS.Replicas.Replica1.Servers.QuebecServer;
+import DAMS.Replicas.Replica1.Servers.SherbrookeServer;
 
 /**
  * Class to handle the restart of servers.
@@ -19,12 +19,11 @@ import DAMS.Replicas.Replica4.Servers.SherbrookeServer;
 public class LocalReplicaManager implements Runnable {
 
     private final int port = 6924;
-    private DatagramSocket notificationSocket;
-    private int errorCounter = 0;
+    private DatagramSocket recoverSocket;
 
     public LocalReplicaManager() {
         try {
-            this.notificationSocket = new DatagramSocket(port);
+            this.recoverSocket = new DatagramSocket(port);
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -34,51 +33,26 @@ public class LocalReplicaManager implements Runnable {
     public void run() {
         startServers();
         while (true) {
-            Notification notification = receiveNotification();
-            assert notification != null;
-            String failType = notification.getFailureType();
-            List<Integer> failedReplicas = notification.getFailedReplicas();
-            int goodReplica = 0;
-            for (int i = 1; i <= 4; i++) {
-                if (!failedReplicas.contains(i)) {
-                    goodReplica = i;
-                }
-            }
-            if ("Crash Failure".equals(failType)) {
-                startServers();
-                restoreReplicaWithDataFrom(goodReplica);
-            } else if ("Software Failure".equals(failType)) {
-                errorCounter++;
-                if (errorCounter > 2) {
-                    errorCounter = 0;
-                    restoreReplicaWithDataFrom(goodReplica);
-                }
-            }
+            HashMap<String, HashMap<String, AppointmentSlot>>[] data = receiveRecoverRequest();
+            startServers();
+            loadDataToServers(data);
         }
 
     }
 
-    private Notification receiveNotification() {
-        byte[] buf = new byte[4095];
+    private HashMap<String, HashMap<String, AppointmentSlot>>[] receiveRecoverRequest() {
+        byte[] buf = new byte[32767];
         try {
             DatagramPacket udpPacket = new DatagramPacket(buf, buf.length);
-            notificationSocket.receive(udpPacket);
-            byte[] notificationPayload = udpPacket.getData();
+            recoverSocket.receive(udpPacket);
+            byte[] data = udpPacket.getData();
             ObjectInputStream objectInputStream =
-                    new ObjectInputStream(new ByteArrayInputStream(notificationPayload));
-            return (Notification) objectInputStream.readObject();
+                    new ObjectInputStream(new ByteArrayInputStream(data));
+            return (HashMap<String, HashMap<String, AppointmentSlot>>[]) objectInputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    // TODO: each replica should have an endpoint to share all of its data
-    // The data can be in a format of an array of type HashMap<String, HashMap<String, Appointment>> of size 3
-    // because there are 3 servers in each replica and each recovered server should be loaded different data.
-    // It seems to be a lot of work here.
-    public void restoreReplicaWithDataFrom(int replica) {
-        byte[] buf = new byte[32767];
     }
 
     private static void startServers() {
@@ -86,6 +60,14 @@ public class LocalReplicaManager implements Runnable {
         QuebecServer.initServer();
         SherbrookeServer.initServer();
     }
+
+    // The data can be in a format of an array of type HashMap<String, HashMap<String, Appointment>> of size 3
+    private void loadDataToServers(HashMap<String, HashMap<String, AppointmentSlot>>[] data) {
+        // load data[0] to mon server
+        // load data[1] to que server
+        // load data[2] to she server
+    }
+
     public static void main(String[] args) {
         new LocalReplicaManager().run();
     }

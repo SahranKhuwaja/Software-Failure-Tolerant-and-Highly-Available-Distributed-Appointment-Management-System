@@ -11,6 +11,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 import java.util.PriorityQueue;
 
@@ -38,6 +39,8 @@ public class ReplicaManager implements Runnable {
     private DatagramSocket forwardNotificationSocket;
     private int nextSeqNum;
 
+    private int errorCounter = 0;
+
     public ReplicaManager() {
         this.holdBackQueue = new PriorityQueue<>(Comparator.comparingInt(Request::getSequenceNumber));
         this.nextSeqNum = 1;
@@ -58,14 +61,42 @@ public class ReplicaManager implements Runnable {
             while (true) {
                 Notification notification = this.receiveNotification();
                 byte[] notificationBytes = toByteArray(notification);
-                DatagramPacket notificationPacket = new DatagramPacket(
-                        notificationBytes,
-                        notificationBytes.length,
-                        new InetSocketAddress(localRmIps[thisReplicaId], localRmPorts[thisReplicaId]));
-                try {
-                    forwardNotificationSocket.send(notificationPacket);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                String failType = notification.getFailureType();
+                List<Integer> failedReplicas = notification.getFailedReplicas();
+                int goodReplica = 0;
+                for (int i = 1; i <= 4; i++) {
+                    if (!failedReplicas.contains(i)) {
+                        goodReplica = i;
+                    }
+                }
+                if ("Crash Failure".equals(failType)) {
+                    // send data to local rm
+                    byte[] data = getDataFromReplica(goodReplica);
+                    DatagramPacket dataPacket = new DatagramPacket(
+                            data,
+                            data.length,
+                            new InetSocketAddress(localRmIps[thisReplicaId], localRmPorts[thisReplicaId]));
+                    try {
+                        forwardNotificationSocket.send(dataPacket);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else if ("Software Failure".equals(failType)) {
+                    errorCounter++;
+                    if (errorCounter > 2) {
+                        errorCounter = 0;
+                        byte[] data = getDataFromReplica(goodReplica);
+                        // send data to local rm
+                        DatagramPacket dataPacket = new DatagramPacket(
+                                data,
+                                data.length,
+                                new InetSocketAddress(localRmIps[thisReplicaId], localRmPorts[thisReplicaId]));
+                        try {
+                            forwardNotificationSocket.send(dataPacket);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         };
@@ -118,19 +149,16 @@ public class ReplicaManager implements Runnable {
 
     public void deliverRequest(Request request) {
         // TODO: ip and port of replica
-        String hostIp = "";
+        String hostIp = localRmIps[thisReplicaId];
         int port = 0;
         switch (request.getServerCode()) {
             case "MTL":
-                hostIp = "1.1.1.1";
                 port = 6821;
                 break;
             case "QUE":
-                hostIp = "1.1.1.1";
                 port = 6822;
                 break;
             case "SHE":
-                hostIp = "1.1.1.1";
                 port = 6823;
                 break;
         }
@@ -164,8 +192,8 @@ public class ReplicaManager implements Runnable {
         return message;
     }
 
-    // TODO:
-    private byte[] getAllDataFromReplica(int replica) {
+    // TODO: to implement
+    private byte[] getDataFromReplica(int replica) {
         try {
             DatagramSocket udpSocket = new DatagramSocket(recoverDataPort);
             byte[] buf = new byte[32767];
@@ -179,7 +207,6 @@ public class ReplicaManager implements Runnable {
             e.printStackTrace();
         }
         return null;
-
     }
 
 }
