@@ -1,5 +1,7 @@
 package DAMS.Frontend.FaultTolerance;
 
+import DAMS.Frontend.UDP.NotifyFailure;
+import DAMS.Notification.Notification;
 import DAMS.Response.Response;
 
 import java.util.*;
@@ -10,10 +12,12 @@ public class FaultTolerance {
 
     List<Response> responseQueue;
     List<Integer> allReplicas;
+    NotifyFailure notify;
 
     public FaultTolerance(List<Response> responseQueue){
         this.responseQueue = responseQueue;
         this.allReplicas = Arrays.asList(1, 2, 3, 4);
+        notify = new NotifyFailure();
     }
 
 
@@ -37,6 +41,9 @@ public class FaultTolerance {
         System.out.println(replicas.toString());
         failedReplicas = this.softwareFailedReplicas(replicas);
         System.out.println(failedReplicas);
+        if(failedReplicas.size()!=0){
+            notify.notifyReplicaManager("Software Failure", failedReplicas);
+        }
         if(failedReplicas.size()==4){
             return replicaResponse;
         }
@@ -60,6 +67,9 @@ public class FaultTolerance {
                 .collect(Collectors.toList());
 
         System.out.println(crashedReplicas);
+        if(crashedReplicas.size()!=0){
+            notify.notifyReplicaManager("Crash Failure", crashedReplicas);
+        }
 
     }
 

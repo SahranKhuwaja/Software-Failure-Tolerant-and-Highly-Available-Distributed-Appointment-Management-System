@@ -68,7 +68,7 @@ public class IPCRequest {
         return replyFromRE;
     }
 
-    public byte[] encodeToByteArray(Request request) throws IOException {
+    private byte[] encodeToByteArray(Request request) throws IOException {
         byte[] message = null;
         try{
             byteArrayOutputStream = new ByteArrayOutputStream();

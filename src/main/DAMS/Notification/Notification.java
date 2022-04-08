@@ -1,8 +1,9 @@
 package DAMS.Notification;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Notification {
+public class Notification implements Serializable {
 
     String failureType;
     List<Integer> failedReplicas;
