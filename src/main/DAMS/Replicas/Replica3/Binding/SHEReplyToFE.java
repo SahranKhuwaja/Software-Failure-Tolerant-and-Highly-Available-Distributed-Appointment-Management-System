@@ -119,13 +119,13 @@ public class SHEReplyToFE extends Thread{
 
 
             case "RemoveAppointment":
-                message = SHE.removeAppointment(request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
+                message = SHE.removeAppointment(request.getAppointmentID().toUpperCase(), request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "ListAppointmentAvailability":
-                message = SHE.listAppointmentAvailability(request.getAppointmentType().toUpperCase());
+                message = SHE.listAppointmentAvailability(request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.length()!=0?true:false;
                 ResponseWrapper rw = new ResponseWrapper();
                 rw.setMessage(message);
@@ -134,7 +134,7 @@ public class SHEReplyToFE extends Thread{
                 break;
 
             case "BookAppointment":
-                message = SHE.bookAppointment(request.getPatientID().toUpperCase(),request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
+                message = SHE.bookAppointment(request.getPatientID().toUpperCase(),request.getAppointmentID().toUpperCase(), request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
@@ -146,13 +146,13 @@ public class SHEReplyToFE extends Thread{
                 break;
 
             case "CancelAppointment":
-                message = SHE.cancelAppointment(request.getPatientID().toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
+                message = SHE.cancelAppointment(request.getPatientID().toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "SwapAppointment":
-                message = SHE.swapAppointment(request.getPatientID().toUpperCase(),request.getOldAppointmentID().toUpperCase(), request.getOldAppointmentType().toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
+                message = SHE.swapAppointment(request.getPatientID().toUpperCase(),request.getOldAppointmentID().toUpperCase(), request.getOldAppointmentType().substring(0,1).toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;

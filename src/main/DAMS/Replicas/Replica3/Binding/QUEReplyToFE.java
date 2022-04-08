@@ -121,13 +121,13 @@ public class QUEReplyToFE extends Thread{
 
 
             case "RemoveAppointment":
-                message = QUE.removeAppointment(request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
+                message = QUE.removeAppointment(request.getAppointmentID().toUpperCase(), request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "ListAppointmentAvailability":
-                message = QUE.listAppointmentAvailability(request.getAppointmentType().toUpperCase());
+                message = QUE.listAppointmentAvailability(request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.length()!=0?true:false;
                 ResponseWrapper rw = new ResponseWrapper();
                 rw.setMessage(message);
@@ -136,7 +136,7 @@ public class QUEReplyToFE extends Thread{
                 break;
 
             case "BookAppointment":
-                message = QUE.bookAppointment(request.getPatientID().toUpperCase(),request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
+                message = QUE.bookAppointment(request.getPatientID().toUpperCase(),request.getAppointmentID().toUpperCase(), request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
@@ -148,13 +148,13 @@ public class QUEReplyToFE extends Thread{
                 break;
 
             case "CancelAppointment":
-                message = QUE.cancelAppointment(request.getPatientID().toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
+                message = QUE.cancelAppointment(request.getPatientID().toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "SwapAppointment":
-                message = QUE.swapAppointment(request.getPatientID().toUpperCase(),request.getOldAppointmentID().toUpperCase(), request.getOldAppointmentType().toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
+                message = QUE.swapAppointment(request.getPatientID().toUpperCase(),request.getOldAppointmentID().toUpperCase(), request.getOldAppointmentType().substring(0,1).toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;

@@ -118,13 +118,13 @@ public class MTLReplyToFE extends Thread{
 
 
             case "RemoveAppointment":
-                message = MTL.removeAppointment(request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
+                message = MTL.removeAppointment(request.getAppointmentID().toUpperCase(), request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "ListAppointmentAvailability":
-                message = MTL.listAppointmentAvailability(request.getAppointmentType().toUpperCase());
+                message = MTL.listAppointmentAvailability(request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.length()!=0?true:false;
                 System.out.println(message);
                 ResponseWrapper rw = new ResponseWrapper();
@@ -134,7 +134,7 @@ public class MTLReplyToFE extends Thread{
                 break;
 
             case "BookAppointment":
-                message = MTL.bookAppointment(request.getPatientID().toUpperCase(),request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
+                message = MTL.bookAppointment(request.getPatientID().toUpperCase(),request.getAppointmentID().toUpperCase(), request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
@@ -146,13 +146,13 @@ public class MTLReplyToFE extends Thread{
                 break;
 
             case "CancelAppointment":
-                message = MTL.cancelAppointment(request.getPatientID().toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
+                message = MTL.cancelAppointment(request.getPatientID().toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
 
             case "SwapAppointment":
-                message = MTL.swapAppointment(request.getPatientID().toUpperCase(),request.getOldAppointmentID().toUpperCase(), request.getOldAppointmentType().toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().toUpperCase());
+                message = MTL.swapAppointment(request.getPatientID().toUpperCase(),request.getOldAppointmentID().toUpperCase(), request.getOldAppointmentType().substring(0,1).toUpperCase(), request.getAppointmentID().toUpperCase(), request.getAppointmentType().substring(0,1).toUpperCase());
                 success = message.toLowerCase().contains("yes")?true:false;
                 response = new Response(request.getOperation(), request.getOperation(), success, message);
                 break;
