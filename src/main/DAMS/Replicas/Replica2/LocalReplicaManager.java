@@ -1,4 +1,4 @@
-package DAMS.RM;
+package DAMS.Replicas.Replica2;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import DAMS.Replicas.Replica1.Servers.SherbrookeServer;
  */
 public class LocalReplicaManager implements Runnable {
 
-    private final int port = 9999;
+    private final int port = 6922;
     private DatagramSocket notificationSocket;
     private int errorCounter = 0;
 
@@ -46,11 +46,12 @@ public class LocalReplicaManager implements Runnable {
                     goodReplica = i;
                 }
             }
-            if ("crash".equals(failType)) {
+            if ("Crash Failure".equals(failType)) {
                 restoreReplicaWithDataFrom(goodReplica);
-            } else if ("software failure".equals(failType)) {
+            } else if ("Software Failure".equals(failType)) {
                 errorCounter++;
                 if (errorCounter > 2) {
+                    errorCounter = 0;
                     restoreReplicaWithDataFrom(goodReplica);
                 }
             }
@@ -59,7 +60,7 @@ public class LocalReplicaManager implements Runnable {
     }
 
     private Notification receiveNotification() {
-        byte[] buf = new byte[32767];
+        byte[] buf = new byte[4095];
         try {
             DatagramPacket udpPacket = new DatagramPacket(buf, buf.length);
             notificationSocket.receive(udpPacket);
