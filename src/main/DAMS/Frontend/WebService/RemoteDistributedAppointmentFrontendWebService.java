@@ -158,6 +158,7 @@ public class RemoteDistributedAppointmentFrontendWebService implements RemoteDis
     public String[] getAppointmentSchedule(String patientID) {
         Request request = new Request(serverCode, userID, "GetAppointmentSchedule", patientID, "", "");
         Response response = ipcRequest.sendRequestToSequencerAndGetReplyFromFE(request);
+        System.out.println(response.getMessages()[1]);
         return response.getMessages();
     }
 

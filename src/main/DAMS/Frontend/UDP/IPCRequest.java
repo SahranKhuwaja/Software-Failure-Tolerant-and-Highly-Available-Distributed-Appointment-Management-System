@@ -18,7 +18,7 @@ public class IPCRequest {
     ObjectOutputStream objectOutputStream;
     ByteArrayInputStream byteArrayInputStream;
     ObjectInputStream objectInputStream;
-    final String HOST_IP = "192.168.2.12";
+    final String HOST_IP = "172.20.10.3";
     final int PORT = 6821;
     List<Response> responseQueue;
     FaultTolerance faultTolerance;

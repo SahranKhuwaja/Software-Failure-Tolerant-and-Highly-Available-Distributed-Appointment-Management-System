@@ -777,7 +777,7 @@ public class WebServiceClientOperations implements ClientLookup {
             }
         } else {
             try {
-                message = rda.listAppointmentAvailability(appointmentType).getMessage();
+                message = rda.listAppointmentAvailability(appointmentType).getData().get("Data");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 logger.severe(e.getMessage());
@@ -850,33 +850,57 @@ public class WebServiceClientOperations implements ClientLookup {
         System.out.println("Fetching... Please wait!");
 
         List<String> schedule = null;
-        try {
-            schedule = Arrays.asList(rda.getAppointmentSchedule(userID));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            logger.severe(e.getMessage());
-        }
-        System.out.print("Appointment Type   ");
-        System.out.print("Appointment ID     ");
-        System.out.println(" ");
-        System.out.println(" ");
-        if (!schedule.isEmpty()) {
-            schedule.stream().forEach(e -> {
-                String[] temp = e.substring(1, e.length() - 1).split(", ");
-                System.out.print(temp[1].split("=")[1]);
-                System.out.print("       ");
-                System.out.print(temp[0].split("=")[1]);
-                System.out.println("");
-            });
+        String scheduleString = null;
+        if (!rda.getAppointmentSchedule(userID)[1].equals("Replica3")) {
+            try {
+                schedule = Arrays.asList(rda.getAppointmentSchedule(userID));
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                logger.severe(e.getMessage());
+            }
+            System.out.print("Appointment Type   ");
+            System.out.print("Appointment ID     ");
+            System.out.println(" ");
+            System.out.println(" ");
+            if (!schedule.isEmpty()) {
+                schedule.stream().forEach(e -> {
+                    String[] temp = e.substring(1, e.length() - 1).split(", ");
+                    System.out.print(temp[1].split("=")[1]);
+                    System.out.print("       ");
+                    System.out.print(temp[0].split("=")[1]);
+                    System.out.println("");
+                });
 
-            logger.info("Server Response: Appointment Schedule displayed for Patient ID '" + userID + "'!");
-        } else {
-            System.out.print("Sorry! No schedule found!");
-            logger.warning("Server Response: Sorry! No schedule found for Patient ID '" + userID + "'!");
+                logger.info("Server Response: Appointment Schedule displayed for Patient ID '" + userID + "'!");
+            } else {
+                System.out.print("Sorry! No schedule found!");
+                logger.warning("Server Response: Sorry! No schedule found for Patient ID '" + userID + "'!");
+                System.out.println(" ");
+                System.out.println(" ");
+            }
             System.out.println(" ");
-            System.out.println(" ");
-        }
-        System.out.println(" ");
+        }else{
+                try {
+                    scheduleString = rda.getAppointmentSchedule(userID)[0];
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    logger.severe(e.getMessage());
+                }
+                System.out.print("Appointment Type   ");
+                System.out.print("Appointment ID     ");
+                System.out.println(" ");
+                System.out.println(" ");
+                if (scheduleString!=null) {
+                    System.out.println(scheduleString);
+                    logger.info("Server Response: Appointment Schedule displayed for Patient ID '" + userID + "'!");
+                } else {
+                    System.out.print("Sorry! No schedule found!");
+                    logger.warning("Server Response: Sorry! No schedule found for Patient ID '" + userID + "'!");
+                    System.out.println(" ");
+                    System.out.println(" ");
+                }
+                System.out.println(" ");
+            }
     }
 
     @Override
