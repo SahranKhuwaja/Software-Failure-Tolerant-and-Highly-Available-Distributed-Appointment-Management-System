@@ -63,14 +63,14 @@ public class QuebecImpl implements HospitalInterface {
         FileWriter fw = null;
         BufferedWriter output = null;
         try {
-
-            myObj = new File("DAMS/Replicas/Replica3/logs/QUEServerLogs.txt");
+            String path  = System.getProperty("user.dir");
+            myObj = new File(path + "/src/main/DAMS/Replicas/Replica3/logs/QUEServerLogs.txt");
 
             if (myObj.createNewFile()) {
                 System.out.println("Log File created: " + myObj.getName());
             }
 
-            fw = new FileWriter("DAMS/Replicas/Replica3/logs/QUEServerLogs.txt", true);
+            fw = new FileWriter(path + "/src/main/DAMS/Replicas/Replica3/logs/QUEServerLogs.txt", true);
 
             output = new BufferedWriter(fw);
 

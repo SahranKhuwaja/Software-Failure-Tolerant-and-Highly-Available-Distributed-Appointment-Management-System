@@ -65,14 +65,14 @@ public class SherbrookeImpl implements HospitalInterface{
         FileWriter fw = null;
         BufferedWriter output = null;
         try {
-
-            myObj = new File("DAMS/Replicas/Replica3/logs/SHEServerLogs.txt");
+            String path  = System.getProperty("user.dir");
+            myObj = new File(path + "/src/main/DAMS/Replica3/logs/SHEServerLogs.txt");
 
             if (myObj.createNewFile()) {
                 System.out.println("Log File created: " + myObj.getName());
             }
 
-            fw = new FileWriter("DAMS/Replicas/Replica3/logs/SHEServerLogs.txt", true);
+            fw = new FileWriter(path + "/src/main/DAMS/Replicas/Replica3/logs/SHEServerLogs.txt", true);
 
             output = new BufferedWriter(fw);
 
