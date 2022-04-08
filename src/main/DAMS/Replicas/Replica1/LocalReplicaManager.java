@@ -32,9 +32,7 @@ public class LocalReplicaManager implements Runnable {
 
     @Override
     public void run() {
-        MontrealServer.initServer();
-        QuebecServer.initServer();
-        SherbrookeServer.initServer();
+        startServers();
         while (true) {
             Notification notification = receiveNotification();
             assert notification != null;
@@ -82,6 +80,11 @@ public class LocalReplicaManager implements Runnable {
         byte[] buf = new byte[32767];
     }
 
+    private static void startServers() {
+        MontrealServer.initServer();
+        QuebecServer.initServer();
+        SherbrookeServer.initServer();
+    }
     public static void main(String[] args) {
         new LocalReplicaManager().run();
     }

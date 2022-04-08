@@ -179,7 +179,6 @@ public class ReplicaManager implements Runnable {
             e.printStackTrace();
         }
         return null;
-
     }
 
 }

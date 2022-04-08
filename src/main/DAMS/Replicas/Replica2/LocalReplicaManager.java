@@ -9,9 +9,6 @@ import java.net.SocketException;
 import java.util.List;
 
 import DAMS.Notification.Notification;
-import DAMS.Replicas.Replica1.Servers.MontrealServer;
-import DAMS.Replicas.Replica1.Servers.QuebecServer;
-import DAMS.Replicas.Replica1.Servers.SherbrookeServer;
 
 /**
  * Class to handle the restart of servers.
@@ -32,9 +29,7 @@ public class LocalReplicaManager implements Runnable {
 
     @Override
     public void run() {
-        MontrealServer.initServer();
-        QuebecServer.initServer();
-        SherbrookeServer.initServer();
+        DamsPublisher.main(new String[]{});
         while (true) {
             Notification notification = receiveNotification();
             assert notification != null;
@@ -47,6 +42,7 @@ public class LocalReplicaManager implements Runnable {
                 }
             }
             if ("Crash Failure".equals(failType)) {
+                DamsPublisher.main(new String[]{});
                 restoreReplicaWithDataFrom(goodReplica);
             } else if ("Software Failure".equals(failType)) {
                 errorCounter++;
