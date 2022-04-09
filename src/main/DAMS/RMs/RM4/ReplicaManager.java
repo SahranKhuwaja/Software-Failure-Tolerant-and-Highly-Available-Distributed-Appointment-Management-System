@@ -26,7 +26,7 @@ public class ReplicaManager implements Runnable {
 
     // TODO: ip address and port of local replica manager
     private final int thisReplicaId = 3;
-    private final String[] localRmIps = { "172.20.10.2", "X.X.X.X", "172.20.10.3", "172.20.10.5" };
+    private final String[] localRmIps = { "172.20.10.2", "172.20.10.4", "172.20.10.3", "172.20.10.5" };
     private final int[] localRmPorts = { 6921, 6922, 6923, 6924};
 
     // TODO: port to receive failure notification
@@ -168,7 +168,7 @@ public class ReplicaManager implements Runnable {
                 port = 6823;
                 break;
         }
-        System.out.println("RM " + thisReplicaId + "deliver request to server" + request.getServerCode());
+        System.out.println("RM " + thisReplicaId + " deliver request to server " + request.getServerCode());
         try {
             DatagramSocket udpSocket = new DatagramSocket();
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

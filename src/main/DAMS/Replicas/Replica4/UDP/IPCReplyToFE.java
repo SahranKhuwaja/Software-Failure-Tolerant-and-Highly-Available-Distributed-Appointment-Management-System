@@ -22,7 +22,7 @@ public class IPCReplyToFE extends Thread implements UDPReplyToFE {
     ObjectInputStream objectInputStream;
     ByteArrayOutputStream byteArrayOutputStream;
     ObjectOutputStream objectOutputStream;
-    final String HOST_IP = "172.20.10.2";
+    final String HOST_IP = "172.20.10.3";
     final int PORT = 6802;
     final int REPLICA = 4;
 
@@ -46,12 +46,15 @@ public class IPCReplyToFE extends Thread implements UDPReplyToFE {
                 byte[] requestBytes = new byte[2000];
                 DatagramPacket request = new DatagramPacket(requestBytes, requestBytes.length);
                 datagramSocket.receive(request);
+                System.out.println("Replica 4 received request from RM.");
                 Request requestFromFE = this.decodeMessage(request);
                 Response wrappedMessage = this.wrapMessage(requestFromFE);
                 byte[] replyBytes = this.encodeToByteArray(wrappedMessage);
                 InetSocketAddress ip = new InetSocketAddress(HOST_IP, PORT);
                 DatagramPacket reply = new DatagramPacket(replyBytes, replyBytes.length,ip);
                 datagramSocket.send(reply);
+                System.out.println("Replica 4 sent response to FE.");
+
             }
         } catch (SocketException e) {
             System.out.println(e.getMessage());
