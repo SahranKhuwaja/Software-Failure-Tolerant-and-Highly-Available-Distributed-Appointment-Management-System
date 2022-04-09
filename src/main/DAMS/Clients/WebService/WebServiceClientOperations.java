@@ -851,7 +851,6 @@ public class WebServiceClientOperations implements ClientLookup {
 
         List<String> schedule = null;
         String scheduleString = null;
-        if (!rda.getAppointmentSchedule(userID)[1].equals("Replica3")) {
             try {
                 schedule = Arrays.asList(rda.getAppointmentSchedule(userID));
             } catch (Exception e) {
@@ -862,7 +861,7 @@ public class WebServiceClientOperations implements ClientLookup {
             System.out.print("Appointment ID     ");
             System.out.println(" ");
             System.out.println(" ");
-            if (!schedule.isEmpty()) {
+            if (!schedule.isEmpty() && !schedule.get(1).equals("Replica3")) {
                 schedule.stream().forEach(e -> {
                     String[] temp = e.substring(1, e.length() - 1).split(", ");
                     System.out.print(temp[1].split("=")[1]);
@@ -872,20 +871,8 @@ public class WebServiceClientOperations implements ClientLookup {
                 });
 
                 logger.info("Server Response: Appointment Schedule displayed for Patient ID '" + userID + "'!");
-            } else {
-                System.out.print("Sorry! No schedule found!");
-                logger.warning("Server Response: Sorry! No schedule found for Patient ID '" + userID + "'!");
-                System.out.println(" ");
-                System.out.println(" ");
-            }
-            System.out.println(" ");
-        }else{
-                try {
-                    scheduleString = rda.getAppointmentSchedule(userID)[0];
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    logger.severe(e.getMessage());
-                }
+            } else if(!schedule.isEmpty() && schedule.get(1).equals("Replica3")){
+                scheduleString = schedule.get(0);
                 System.out.print("Appointment Type   ");
                 System.out.print("Appointment ID     ");
                 System.out.println(" ");
@@ -900,7 +887,14 @@ public class WebServiceClientOperations implements ClientLookup {
                     System.out.println(" ");
                 }
                 System.out.println(" ");
+            } else {
+                System.out.print("Sorry! No schedule found!");
+                logger.warning("Server Response: Sorry! No schedule found for Patient ID '" + userID + "'!");
+                System.out.println(" ");
+                System.out.println(" ");
             }
+            System.out.println(" ");
+
     }
 
     @Override
