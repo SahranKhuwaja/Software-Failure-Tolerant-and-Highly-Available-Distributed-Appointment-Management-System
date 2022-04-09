@@ -139,9 +139,15 @@ public class LocalReplicaManager implements Runnable {
     }
 
     private static void startServers() {
-        StartMTL.main(new String[0]);
-        StartQUE.main(new String[0]);
-        StartSHE.main(new String[0]);
+        new Thread(() -> {
+            StartMTL.main(new String[0]);
+        }).start();
+        new Thread(() -> {
+            StartQUE.main(new String[0]);
+        }).start();
+        new Thread(() -> {
+            StartSHE.main(new String[0]);
+        }).start();
     }
 
 
