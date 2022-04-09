@@ -1,7 +1,7 @@
 package DAMS.Replicas.Replica4.UDP;
 
 
-import DAMS.Replicas.Replica1.Interfaces.UDPRequest;
+import DAMS.Replicas.Replica4.Interfaces.UDPRequest;
 
 import java.net.*;
 import java.util.Arrays;
@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class IPCRequest implements UDPRequest {
 	DatagramSocket datagramSocket = null;
 	Logger logger;
-	final String HOST_IP = "192.168.2.12";
+	final String HOST_IP = "172.20.10.5";
 	
 	public IPCRequest(Logger logger) {
 		this.logger = logger;

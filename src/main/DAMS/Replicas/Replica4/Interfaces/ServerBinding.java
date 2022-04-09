@@ -1,7 +1,7 @@
 package DAMS.Replicas.Replica4.Interfaces;
 
 
-import DAMS.Replicas.Replica1.RemoteDistributedAppointment.RemoteDistributedAppointment;
+import DAMS.Replicas.Replica4.RemoteDistributedAppointment.RemoteDistributedAppointment;
 
 public interface ServerBinding {
 	public RemoteDistributedAppointment binding(int port, String serverName);

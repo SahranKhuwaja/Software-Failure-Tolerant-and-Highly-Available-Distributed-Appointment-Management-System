@@ -27,7 +27,7 @@ public class ReplicaManager implements Runnable {
     // TODO: ip address and port of local replica manager
     private final int thisReplicaId = 1;
     private final String[] localRmIps = { "172.20.10.2", "172.20.10.4", "172.20.10.3", "172.20.10.5" };
-    private final int[] localRmPorts = { 6921, 6922, 6923, 6924};
+    private final int[] localRmPorts = { 6921, 6922, 6923, 6924 };
 
     // TODO: port to receive failure notification
     private final int failureDetectionPort = 2000 + thisReplicaId;
@@ -60,7 +60,7 @@ public class ReplicaManager implements Runnable {
         Runnable listenNotification = () -> {
             while (true) {
                 Notification notification = this.receiveNotification();
-                System.out.println("RM " + thisReplicaId + "Received failure notification");
+                System.out.println("RM " + (thisReplicaId + 1) + " Received failure notification");
                 byte[] notificationBytes = toByteArray(notification);
                 String failType = notification.getFailureType();
                 List<Integer> failedReplicas = notification.getFailedReplicas();
@@ -104,13 +104,17 @@ public class ReplicaManager implements Runnable {
         Runnable listenRequest = () -> {
             while (true) {
                 Request incomingRequest = this.receiveRequest();
-                System.out.println("RM" + thisReplicaId + "receive request");
+                System.out.println("RM " + (thisReplicaId + 1) + " receive request");
                 holdBackQueue.add(incomingRequest);
                 assert holdBackQueue.peek() != null;
                 if (nextSeqNum == holdBackQueue.peek().getSequenceNumber()) {
-                    System.out.println("RM " + thisReplicaId + ": sequence number matched");
+                    System.out.println("RM " + (thisReplicaId + 1) + ": sequence number matched");
                     deliverRequest(Objects.requireNonNull(holdBackQueue.poll()));
                     this.nextSeqNum++;
+                } else {
+                    assert holdBackQueue.peek() != null;
+                    System.out.println("RM " + (thisReplicaId + 1) + ": sequence number mismatch: expecting "
+                            + this.nextSeqNum + ", getting " + holdBackQueue.peek().getSequenceNumber());
                 }
             }
 
@@ -123,7 +127,7 @@ public class ReplicaManager implements Runnable {
         byte[] buf = new byte[32767];
         try {
             DatagramPacket udpPacket = new DatagramPacket(buf, buf.length);
-            System.out.println("RM " + thisReplicaId + "Waiting for multicast request");
+            System.out.println("RM " + (thisReplicaId + 1) + " Waiting for multicast request");
             multicastSocket.receive(udpPacket);
             byte[] responsePayload = udpPacket.getData();
             ObjectInputStream objectInputStream =
@@ -139,9 +143,9 @@ public class ReplicaManager implements Runnable {
         byte[] buf = new byte[32767];
         try {
             DatagramPacket udpPacket = new DatagramPacket(buf, buf.length);
-            System.out.println("RM " + thisReplicaId + "Waiting for failure notification");
+            System.out.println("RM " + (thisReplicaId + 1) + " Waiting for failure notification");
             notificationSocket.receive(udpPacket);
-            System.out.println("RM " + thisReplicaId + "received failure notification");
+            System.out.println("RM " + (thisReplicaId + 1) + " received failure notification");
             byte[] notificationPayload = udpPacket.getData();
             ObjectInputStream objectInputStream =
                     new ObjectInputStream(new ByteArrayInputStream(notificationPayload));
@@ -157,7 +161,7 @@ public class ReplicaManager implements Runnable {
         // TODO: ip and port of replica
         String hostIp = localRmIps[thisReplicaId];
         int port = 6807;
-        System.out.println("RM " + thisReplicaId + "deliver request to server" + request.getServerCode());
+        System.out.println("RM " + (thisReplicaId + 1) + " deliver request to server" + request.getServerCode());
         try {
             DatagramSocket udpSocket = new DatagramSocket();
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -175,7 +179,7 @@ public class ReplicaManager implements Runnable {
 
     private byte[] toByteArray(Object obj) {
         byte[] message = null;
-        ByteArrayOutputStream byteArrayOutputStream = null;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(obj);

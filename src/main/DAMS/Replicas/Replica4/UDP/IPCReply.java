@@ -7,9 +7,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import DAMS.Replicas.Replica1.AppointmentSlots.AppointmentSlot;
-import DAMS.Replicas.Replica1.Interfaces.UDPReply;
-import DAMS.Replicas.Replica1.RemoteDistributedAppointment.RemoteDistributedAppointment;
+import DAMS.Replicas.Replica4.AppointmentSlots.AppointmentSlot;
+import DAMS.Replicas.Replica4.Interfaces.UDPReply;
+import DAMS.Replicas.Replica4.RemoteDistributedAppointment.RemoteDistributedAppointment;
 
 public class IPCReply extends Thread implements UDPReply {
 	DatagramSocket datagramSocket = null;

@@ -16,11 +16,11 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import DAMS.Replicas.Replica1.AppointmentSlots.AppointmentSlot;
-import DAMS.Replicas.Replica1.Booking.Booking;
-import DAMS.Replicas.Replica1.Interfaces.DistributedAppointment;
+import DAMS.Replicas.Replica4.AppointmentSlots.AppointmentSlot;
+import DAMS.Replicas.Replica4.Booking.Booking;
+import DAMS.Replicas.Replica4.Interfaces.DistributedAppointment;
 import DAMS.ResponseWrapper.ResponseWrapper;
-import DAMS.Replicas.Replica1.UDP.IPCRequest;
+import DAMS.Replicas.Replica4.UDP.IPCRequest;
 
 public class RemoteDistributedAppointment implements DistributedAppointment {
 

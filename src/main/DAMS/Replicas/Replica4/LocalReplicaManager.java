@@ -11,10 +11,11 @@ import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.util.HashMap;
 
-import DAMS.Replicas.Replica1.AppointmentSlots.AppointmentSlot;
-import DAMS.Replicas.Replica1.Servers.MontrealServer;
-import DAMS.Replicas.Replica1.Servers.QuebecServer;
-import DAMS.Replicas.Replica1.Servers.SherbrookeServer;
+import DAMS.Replicas.Replica4.AppointmentSlots.AppointmentSlot;
+import DAMS.Replicas.Replica4.Servers.MontrealServer;
+import DAMS.Replicas.Replica4.Servers.QuebecServer;
+import DAMS.Replicas.Replica4.Servers.SherbrookeServer;
+
 
 /**
  * Class to handle the restart of servers.
@@ -27,7 +28,7 @@ public class LocalReplicaManager implements Runnable {
     private final int getAllDataRequestPort = 6931;
     private DatagramSocket getAllDataSocket;
 
-    private final String[] localRmIps = { "X.X.X.X", "X.X.X.X", "X.X.X.X", "X.X.X.X" };
+    private final String[] localRmIps = {  "172.20.10.2", "172.20.10.4", "172.20.10.3", "172.20.10.5" };
     private final int[] localRmPorts = { 6921, 6922, 6923, 6924 };
 
     public LocalReplicaManager() {
