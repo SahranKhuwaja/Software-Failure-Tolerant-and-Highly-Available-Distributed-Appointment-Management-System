@@ -186,7 +186,7 @@ public class ReplicaManager implements Runnable {
 
     private byte[] toByteArray(Object obj) {
         byte[] message = null;
-        ByteArrayOutputStream byteArrayOutputStream = null;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(obj);

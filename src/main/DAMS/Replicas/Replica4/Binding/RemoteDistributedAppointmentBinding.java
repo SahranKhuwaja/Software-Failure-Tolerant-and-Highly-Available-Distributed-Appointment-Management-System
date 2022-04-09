@@ -1,8 +1,8 @@
 package DAMS.Replicas.Replica4.Binding;
 
-import DAMS.Replicas.Replica1.Interfaces.ServerBinding;
-import DAMS.Replicas.Replica1.RemoteDistributedAppointment.RemoteDistributedAppointment;
-import DAMS.Replicas.Replica1.UDP.IPCReplyToFE;
+import DAMS.Replicas.Replica4.Interfaces.ServerBinding;
+import DAMS.Replicas.Replica4.RemoteDistributedAppointment.RemoteDistributedAppointment;
+import DAMS.Replicas.Replica4.UDP.IPCReplyToFE;
 
 import java.io.BufferedWriter;
 import java.io.File;

@@ -3,9 +3,9 @@ package DAMS.Replicas.Replica4.Servers;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
-import DAMS.Replicas.Replica1.RemoteDistributedAppointment.RemoteDistributedAppointment;
-import DAMS.Replicas.Replica1.UDP.IPCReply;
-import DAMS.Replicas.Replica1.Binding.RemoteDistributedAppointmentBinding;
+import DAMS.Replicas.Replica4.RemoteDistributedAppointment.RemoteDistributedAppointment;
+import DAMS.Replicas.Replica4.UDP.IPCReply;
+import DAMS.Replicas.Replica4.Binding.RemoteDistributedAppointmentBinding;
 
 public class SherbrookeServer{
 	

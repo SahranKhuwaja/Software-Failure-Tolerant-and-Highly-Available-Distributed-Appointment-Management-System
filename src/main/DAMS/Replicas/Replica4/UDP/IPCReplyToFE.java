@@ -1,8 +1,8 @@
 package DAMS.Replicas.Replica4.UDP;
 
 import DAMS.Request.Request;
-import DAMS.Replicas.Replica1.Interfaces.UDPReplyToFE;
-import DAMS.Replicas.Replica1.RemoteDistributedAppointment.RemoteDistributedAppointment;
+import DAMS.Replicas.Replica4.Interfaces.UDPReplyToFE;
+import DAMS.Replicas.Replica4.RemoteDistributedAppointment.RemoteDistributedAppointment;
 import DAMS.Response.Response;
 import DAMS.ResponseWrapper.ResponseWrapper;
 

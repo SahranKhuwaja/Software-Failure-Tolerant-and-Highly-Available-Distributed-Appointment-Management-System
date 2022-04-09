@@ -1,7 +1,7 @@
 package DAMS.Replicas.Replica4.UDP;
 
 
-import DAMS.Replicas.Replica1.Interfaces.UDPRequest;
+import DAMS.Replicas.Replica4.Interfaces.UDPRequest;
 
 import java.net.*;
 import java.util.Arrays;

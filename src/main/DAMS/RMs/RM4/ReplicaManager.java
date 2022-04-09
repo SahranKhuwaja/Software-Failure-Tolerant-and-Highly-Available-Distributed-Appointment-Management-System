@@ -60,7 +60,7 @@ public class ReplicaManager implements Runnable {
         Runnable listenNotification = () -> {
             while (true) {
                 Notification notification = this.receiveNotification();
-                System.out.println("RM " + thisReplicaId + "Received failure notification");
+                System.out.println("RM " + thisReplicaId + " Received failure notification");
                 byte[] notificationBytes = toByteArray(notification);
                 String failType = notification.getFailureType();
                 List<Integer> failedReplicas = notification.getFailedReplicas();
@@ -104,7 +104,7 @@ public class ReplicaManager implements Runnable {
         Runnable listenRequest = () -> {
             while (true) {
                 Request incomingRequest = this.receiveRequest();
-                System.out.println("RM" + thisReplicaId + "receive request");
+                System.out.println("RM" + thisReplicaId + " receive request");
                 holdBackQueue.add(incomingRequest);
                 assert holdBackQueue.peek() != null;
                 if (nextSeqNum == holdBackQueue.peek().getSequenceNumber()) {
@@ -123,7 +123,7 @@ public class ReplicaManager implements Runnable {
         byte[] buf = new byte[32767];
         try {
             DatagramPacket udpPacket = new DatagramPacket(buf, buf.length);
-            System.out.println("RM " + thisReplicaId + "Waiting for multicast request");
+            System.out.println("RM " + thisReplicaId + " Waiting for multicast request");
             multicastSocket.receive(udpPacket);
             byte[] responsePayload = udpPacket.getData();
             ObjectInputStream objectInputStream =
@@ -139,9 +139,9 @@ public class ReplicaManager implements Runnable {
         byte[] buf = new byte[32767];
         try {
             DatagramPacket udpPacket = new DatagramPacket(buf, buf.length);
-            System.out.println("RM " + thisReplicaId + "Waiting for failure notification");
+            System.out.println("RM " + thisReplicaId + " Waiting for failure notification");
             notificationSocket.receive(udpPacket);
-            System.out.println("RM " + thisReplicaId + "received failure notification");
+            System.out.println("RM " + thisReplicaId + " received failure notification");
             byte[] notificationPayload = udpPacket.getData();
             ObjectInputStream objectInputStream =
                     new ObjectInputStream(new ByteArrayInputStream(notificationPayload));
@@ -186,7 +186,7 @@ public class ReplicaManager implements Runnable {
 
     private byte[] toByteArray(Object obj) {
         byte[] message = null;
-        ByteArrayOutputStream byteArrayOutputStream = null;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(obj);
