@@ -58,9 +58,8 @@ public class LocalReplicaManager implements Runnable {
             }
         };
 
-        listenGetAllDataRequest.run();
-        listenRecoverRequest.run();
-
+        new Thread(listenGetAllDataRequest).start();
+        new Thread(listenRecoverRequest).start();
 
     }
 

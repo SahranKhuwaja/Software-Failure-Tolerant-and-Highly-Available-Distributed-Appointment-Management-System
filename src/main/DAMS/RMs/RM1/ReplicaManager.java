@@ -204,7 +204,10 @@ public class ReplicaManager implements Runnable {
         try {
             DatagramSocket udpSocket = new DatagramSocket(recoverDataPort);
             byte[] buf = new byte[32767];
-            DatagramPacket requestPacket = new DatagramPacket(buf, buf.length, new InetSocketAddress(localRmIps[replica], localRmPorts[replica]));
+            DatagramPacket requestPacket = new DatagramPacket(
+                    buf,
+                    buf.length,
+                    new InetSocketAddress(localRmIps[replica], localRmPorts[replica]));
             udpSocket.send(requestPacket);
             DatagramPacket responsePacket = new DatagramPacket(buf, buf.length);
             udpSocket.receive(responsePacket);
