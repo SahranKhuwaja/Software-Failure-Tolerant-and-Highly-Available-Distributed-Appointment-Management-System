@@ -28,7 +28,7 @@ public class LocalReplicaManager implements Runnable {
     private final int getAllDataRequestPort = 6931;
     private DatagramSocket getAllDataSocket;
 
-    private final String[] localRmIps = {  "172.20.10.2", "172.20.10.4", "172.20.10.3", "172.20.10.5" };
+    private final String[] localRmIps = { "172.20.10.2", "172.20.10.4", "172.20.10.3", "172.20.10.5" };
     private final int[] localRmPorts = { 6921, 6922, 6923, 6924 };
 
     public LocalReplicaManager() {
@@ -72,8 +72,9 @@ public class LocalReplicaManager implements Runnable {
             byte[] data = udpPacket.getData();
             ObjectInputStream objectInputStream =
                     new ObjectInputStream(new ByteArrayInputStream(data));
-            return (HashMap<String, HashMap<String, AppointmentSlot>>[]) objectInputStream.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+            return null;
+//            return (HashMap<String, HashMap<String, AppointmentSlot>>[]) objectInputStream.readObject();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;

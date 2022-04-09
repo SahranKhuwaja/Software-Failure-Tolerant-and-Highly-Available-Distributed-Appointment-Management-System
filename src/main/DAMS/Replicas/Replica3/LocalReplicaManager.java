@@ -82,7 +82,7 @@ public class LocalReplicaManager implements Runnable {
     private int receiveGetAllDataRequest() {
         int targetReplicaId = -1;
         try {
-            DatagramPacket p = new DatagramPacket(new byte[4], 1023);
+            DatagramPacket p = new DatagramPacket(new byte[4], 4);
             getAllDataSocket.receive(p);
             targetReplicaId = (int) p.getData()[3] & 0xff;
             return targetReplicaId;
