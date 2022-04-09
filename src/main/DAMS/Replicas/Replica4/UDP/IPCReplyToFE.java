@@ -22,7 +22,7 @@ public class IPCReplyToFE extends Thread implements UDPReplyToFE {
     ObjectInputStream objectInputStream;
     ByteArrayOutputStream byteArrayOutputStream;
     ObjectOutputStream objectOutputStream;
-    final String HOST_IP = "192.168.2.12";
+    final String HOST_IP = "172.20.10.2";
     final int PORT = 6802;
     final int REPLICA = 4;
 
