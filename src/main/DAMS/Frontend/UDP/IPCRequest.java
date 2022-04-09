@@ -19,7 +19,7 @@ public class IPCRequest {
     ByteArrayInputStream byteArrayInputStream;
     ObjectInputStream objectInputStream;
     final String HOST_IP = "172.20.10.3";
-    final int PORT = 6821;
+    final int PORT = 6801;
     List<Response> responseQueue;
     FaultTolerance faultTolerance;
 
@@ -48,7 +48,10 @@ public class IPCRequest {
                     break;
                 }
             }
-            //System.out.println(responseQueue.size());
+            System.out.println("size" + responseQueue.size());
+            for (Response r : responseQueue){
+                System.out.println("Response from" + r.getReplica());
+            }
             faultTolerance = new FaultTolerance(responseQueue);
             replyFromRE = faultTolerance.detectSoftwareFailure();
             if(responseQueue.size()!=4){

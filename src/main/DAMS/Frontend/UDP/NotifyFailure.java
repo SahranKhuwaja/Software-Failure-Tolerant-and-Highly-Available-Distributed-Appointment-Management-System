@@ -17,10 +17,10 @@ public class NotifyFailure {
 
     public NotifyFailure(){
         addresses = new LinkedHashMap<Integer, Address>();
-        addresses.put(1,new Address("",1));
-        addresses.put(2,new Address("",2));
-        addresses.put(3,new Address("",3));
-        addresses.put(4,new Address("",4));
+        addresses.put(1,new Address("172.20.10.5",2000));
+        addresses.put(2,new Address("172.20.10.5",2001));
+        addresses.put(3,new Address("172.20.10.5",2002));
+        addresses.put(4,new Address("172.20.10.5",2003));
     }
 
     public void notifyReplicaManager(String failureType, List<Integer> failedReplicas) {

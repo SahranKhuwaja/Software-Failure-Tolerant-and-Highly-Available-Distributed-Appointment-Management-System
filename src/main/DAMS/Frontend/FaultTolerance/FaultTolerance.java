@@ -38,9 +38,8 @@ public class FaultTolerance {
                     replicas.put(index.get(),defectedReplicas);
                     index.set(index.get()+1);
                 });
-        System.out.println(replicas.toString());
         failedReplicas = this.softwareFailedReplicas(replicas);
-        System.out.println(failedReplicas);
+        System.out.println("Software" + failedReplicas);
         if(failedReplicas.size()!=0){
             notify.notifyReplicaManager("Software Failure", failedReplicas);
         }
@@ -66,7 +65,7 @@ public class FaultTolerance {
                 .filter(e->!receivedReplicas.contains(e))
                 .collect(Collectors.toList());
 
-        System.out.println(crashedReplicas);
+        System.out.println("crashed" + crashedReplicas);
         if(crashedReplicas.size()!=0){
             notify.notifyReplicaManager("Crash Failure", crashedReplicas);
         }
@@ -78,8 +77,6 @@ public class FaultTolerance {
         switch (r1.methodName()){
             case "GetAppointmentTypes":
             case "GetTimeSlots":
-              response = r1.success()==r2.success() && r1.getMessages().equals(r2.getMessages());
-              break;
             case "AddAppointment":
             case "RemoveAppointment":
             case "ListAppointmentAvailability":
