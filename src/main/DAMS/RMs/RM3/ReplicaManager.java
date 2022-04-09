@@ -104,13 +104,17 @@ public class ReplicaManager implements Runnable {
         Runnable listenRequest = () -> {
             while (true) {
                 Request incomingRequest = this.receiveRequest();
-                System.out.println("RM" + (thisReplicaId + 1) + " receive request");
+                System.out.println("RM " + (thisReplicaId + 1) + " receive request");
                 holdBackQueue.add(incomingRequest);
                 assert holdBackQueue.peek() != null;
                 if (nextSeqNum == holdBackQueue.peek().getSequenceNumber()) {
                     System.out.println("RM " + (thisReplicaId + 1) + ": sequence number matched");
                     deliverRequest(Objects.requireNonNull(holdBackQueue.poll()));
                     this.nextSeqNum++;
+                } else {
+                    assert holdBackQueue.peek() != null;
+                    System.out.println("RM " + (thisReplicaId + 1) + ": sequence number mismatch: expecting "
+                            + this.nextSeqNum + ", getting " + holdBackQueue.peek().getSequenceNumber());
                 }
             }
 

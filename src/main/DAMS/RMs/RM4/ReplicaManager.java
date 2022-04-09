@@ -27,7 +27,7 @@ public class ReplicaManager implements Runnable {
     // TODO: ip address and port of local replica manager
     private final int thisReplicaId = 3;
     private final String[] localRmIps = { "172.20.10.2", "172.20.10.4", "172.20.10.3", "172.20.10.5" };
-    private final int[] localRmPorts = { 6921, 6922, 6923, 6924};
+    private final int[] localRmPorts = { 6921, 6922, 6923, 6924 };
 
     // TODO: port to receive failure notification
     private final int failureDetectionPort = 2000 + thisReplicaId;
@@ -104,13 +104,17 @@ public class ReplicaManager implements Runnable {
         Runnable listenRequest = () -> {
             while (true) {
                 Request incomingRequest = this.receiveRequest();
-                System.out.println("RM" + (thisReplicaId + 1) + " receive request");
+                System.out.println("RM " + (thisReplicaId + 1) + " receive request");
                 holdBackQueue.add(incomingRequest);
                 assert holdBackQueue.peek() != null;
                 if (nextSeqNum == holdBackQueue.peek().getSequenceNumber()) {
                     System.out.println("RM " + (thisReplicaId + 1) + ": sequence number matched");
                     deliverRequest(Objects.requireNonNull(holdBackQueue.poll()));
                     this.nextSeqNum++;
+                } else {
+                    assert holdBackQueue.peek() != null;
+                    System.out.println("RM " + (thisReplicaId + 1) + ": sequence number mismatch: expecting "
+                            + this.nextSeqNum + ", getting " + holdBackQueue.peek().getSequenceNumber());
                 }
             }
 
@@ -168,7 +172,7 @@ public class ReplicaManager implements Runnable {
                 port = 6823;
                 break;
         }
-        System.out.println("RM " + thisReplicaId + " deliver request to server " + request.getServerCode());
+        System.out.println("RM " + (thisReplicaId + 1) + " deliver request to server" + request.getServerCode());
         try {
             DatagramSocket udpSocket = new DatagramSocket();
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
