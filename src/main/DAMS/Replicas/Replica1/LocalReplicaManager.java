@@ -59,8 +59,7 @@ public class LocalReplicaManager implements Runnable {
         Runnable listenRecoverRequest = () -> {
             while (true) {
                 HashMap<String, HashMap<String, AppointmentSlot>>[] data = receiveRecoverRequest();
-                killServers();
-                startServers();
+                restartServers();
 //                loadDataToServers(data);
             }
         };
@@ -185,6 +184,10 @@ public class LocalReplicaManager implements Runnable {
         killServerOnPort(6822);
         killServerOnPort(6823);
 
+    }
+
+    private void restartServers() {
+        System.out.println("Replica 1 restart servers");
     }
 
     public static void main(String[] args) {

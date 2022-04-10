@@ -194,22 +194,18 @@ public class ReplicaManager implements Runnable {
 
     // TODO: to implement
     private byte[] getDataFromReplica(int replica) {
-        try {
-            DatagramSocket udpSocket = new DatagramSocket(recoverDataPort);
-            byte[] buf = new byte[32767];
-            DatagramPacket requestPacket = new DatagramPacket(
-                    buf,
-                    buf.length,
-                    new InetSocketAddress(localRmIps[replica - 1], localRmPorts[replica - 1]));
-            udpSocket.send(requestPacket);
-            DatagramPacket responsePacket = new DatagramPacket(buf, buf.length);
-//            udpSocket.receive(responsePacket);
-            return responsePacket.getData();
+//            DatagramSocket udpSocket = new DatagramSocket(recoverDataPort);
+//            byte[] buf = new byte[32767];
+//            DatagramPacket requestPacket = new DatagramPacket(
+//                    buf,
+//                    buf.length,
+//                    new InetSocketAddress(localRmIps[replica - 1], localRmPorts[replica - 1]));
+//            udpSocket.send(requestPacket);
+//            DatagramPacket responsePacket = new DatagramPacket(buf, buf.length);
+////            udpSocket.receive(responsePacket);
+//            return responsePacket.getData();
+        return new byte[1];
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
 }

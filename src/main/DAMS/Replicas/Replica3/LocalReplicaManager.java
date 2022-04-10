@@ -1,11 +1,9 @@
 package DAMS.Replicas.Replica3;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -59,8 +57,7 @@ public class LocalReplicaManager implements Runnable {
         Runnable listenRecoverRequest = () -> {
             while (true) {
                 HashMap<String, HashMap<String, AppointmentSlot>>[] data = receiveRecoverRequest();
-                killServers();
-                startServers();
+                restartServers();
 //                loadDataToServers(data);
             }
         };
@@ -189,9 +186,11 @@ public class LocalReplicaManager implements Runnable {
         killServerOnPort(6821);
         killServerOnPort(6822);
         killServerOnPort(6823);
-
     }
 
+    private void restartServers() {
+        System.out.println("Replica 3 restart servers");
+    }
 
     public static void main(String[] args) {
         new LocalReplicaManager().run();
