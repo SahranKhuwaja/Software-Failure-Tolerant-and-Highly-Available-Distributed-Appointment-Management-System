@@ -159,11 +159,11 @@ public class LocalReplicaManager implements Runnable {
         this.queThread = new Thread(QuebecServer::initServer);
         this.sheThread = new Thread(SherbrookeServer::initServer);
 
-        System.out.println("Replica 4 start MTL server");
+        System.out.println("Replica 1 start MTL server");
         this.mtlThread.start();
-        System.out.println("Replica 4 start QUE server");
+        System.out.println("Replica 1 start QUE server");
         this.queThread.start();
-        System.out.println("Replica 4 start SHE server");
+        System.out.println("Replica 1 start SHE server");
         this.sheThread.start();
     }
 

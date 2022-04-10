@@ -22,12 +22,15 @@ public class FaultTolerance {
 
 
     public Response detectSoftwareFailure(){
-        AtomicInteger index = new AtomicInteger(1);
+        //AtomicInteger index = new AtomicInteger(1);
         LinkedHashMap<Integer, List<Boolean>> replicas = new LinkedHashMap<Integer, List<Boolean>>();
         List<Integer> failedReplicas = null;
         Response replicaResponse = responseQueue.get(0);;
         if(responseQueue.size()==1){
             return replicaResponse;
+        }
+        for(Response a : responseQueue){
+            System.out.println(a.getReplica());
         }
         responseQueue.stream()
                 .forEach(e->{
@@ -35,8 +38,7 @@ public class FaultTolerance {
                             //.filter(el->!el.equals(e))
                             .map(el->this.compare(e,el))
                             .collect(Collectors.toList());
-                    replicas.put(index.get(),defectedReplicas);
-                    index.set(index.get()+1);
+                    replicas.put(e.getReplica(),defectedReplicas);
                 });
         failedReplicas = this.softwareFailedReplicas(replicas);
         System.out.println("Software" + failedReplicas);
