@@ -30,6 +30,10 @@ public class LocalReplicaManager implements Runnable {
     private final String[] localRmIps = { "X.X.X.X", "X.X.X.X", "X.X.X.X", "X.X.X.X" };
     private final int[] localRmPorts = { 6921, 6922, 6923, 6924 };
 
+    private Thread mtlThread;
+    private Thread queThread;
+    private Thread sheThread;
+
     public LocalReplicaManager() {
         try {
             this.recoverSocket = new DatagramSocket(recoverRequestPort);
@@ -53,8 +57,20 @@ public class LocalReplicaManager implements Runnable {
         Runnable listenRecoverRequest = () -> {
             while (true) {
                 HashMap<String, HashMap<String, AppointmentSlot>>[] data = receiveRecoverRequest();
+                if (this.mtlThread.isAlive()) {
+                    System.out.println("Replica 3 kill MTL server");
+                    this.mtlThread.interrupt();
+                }
+                if (this.queThread.isAlive()) {
+                    System.out.println("Replica 3 kill QUE server");
+                    this.queThread.interrupt();
+                }
+                if (this.sheThread.isAlive()) {
+                    System.out.println("Replica 3 kill SHE server");
+                    this.sheThread.interrupt();
+                }
                 startServers();
-                loadDataToServers(data);
+//                loadDataToServers(data);
             }
         };
 
@@ -138,16 +154,23 @@ public class LocalReplicaManager implements Runnable {
         return message;
     }
 
-    private static void startServers() {
-        new Thread(() -> {
+    private void startServers() {
+        this.mtlThread = new Thread(() -> {
             StartMTL.main(new String[0]);
-        }).start();
-        new Thread(() -> {
+        });
+        this.queThread = new Thread(() -> {
             StartQUE.main(new String[0]);
-        }).start();
-        new Thread(() -> {
+        });
+        this.sheThread = new Thread(() -> {
             StartSHE.main(new String[0]);
-        }).start();
+        });
+        System.out.println("Replica 3 start MTL server");
+        this.mtlThread.start();
+        System.out.println("Replica 3 start QUE server");
+        this.queThread.start();
+        System.out.println("Replica 3 start SHE server");
+        this.sheThread.start();
+
     }
 
 

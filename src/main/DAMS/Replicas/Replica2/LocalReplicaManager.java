@@ -12,9 +12,6 @@ import java.net.SocketException;
 import java.util.HashMap;
 
 import DAMS.Replicas.Replica1.AppointmentSlots.AppointmentSlot;
-import DAMS.Replicas.Replica1.Servers.MontrealServer;
-import DAMS.Replicas.Replica1.Servers.QuebecServer;
-import DAMS.Replicas.Replica1.Servers.SherbrookeServer;
 
 /**
  * Class to handle the restart of servers.
@@ -29,6 +26,8 @@ public class LocalReplicaManager implements Runnable {
 
     private final String[] localRmIps = { "X.X.X.X", "X.X.X.X", "X.X.X.X", "X.X.X.X" };
     private final int[] localRmPorts = { 6921, 6922, 6923, 6924 };
+
+    private Thread serverThread;
 
     public LocalReplicaManager() {
         try {
@@ -53,8 +52,12 @@ public class LocalReplicaManager implements Runnable {
         Runnable listenRecoverRequest = () -> {
             while (true) {
                 HashMap<String, HashMap<String, AppointmentSlot>>[] data = receiveRecoverRequest();
+                if (serverThread.isAlive()) {
+                    System.out.println("Replica 2 kill servers");
+                    serverThread.interrupt();
+                }
                 startServers();
-                loadDataToServers(data);
+//                loadDataToServers(data);
             }
         };
 
@@ -138,8 +141,9 @@ public class LocalReplicaManager implements Runnable {
         return message;
     }
 
-    private static void startServers() {
-        DamsPublisher.main(new String[]{});
+    private void startServers() {
+        System.out.println("Replica 2 start servers");
+        this.serverThread = new Thread(() -> DamsPublisher.main(new String[]{}));
     }
 
 
