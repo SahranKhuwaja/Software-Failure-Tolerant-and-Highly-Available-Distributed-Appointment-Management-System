@@ -71,7 +71,10 @@ public class UDPMainThread implements Runnable {
                     //Send response to Frontend
                     byte[] responseDataBytes = convertToBytes(response);
                     InetSocketAddress ip = new InetSocketAddress(request.getFE_IP(), request.getFE_PORT());
+                    //InetSocketAddress ip = new InetSocketAddress(ConfigUtil.getPropValue(FRONTEND_UDP_SERVER_IP), Integer.parseInt(ConfigUtil.getPropValue(FRONTEND_UDP_SERVER_PORT)));
                     DatagramPacket reply = new DatagramPacket(responseDataBytes, responseDataBytes.length, ip);
+
+                    log(CityType.valueOf(request.getServerCode()), "Replying UDP message", INFO, request.getOperation());
                     aSocket.send(reply);
                 }
             }

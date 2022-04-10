@@ -32,9 +32,11 @@ public class TestClient {
             System.out.println("\n\nStop one server to simulate process crash. Press ENTER when ready...");
             kbd.nextLine();
 
-            assertTrue(testDetail.init("Patient MTL2046 has no appointments"), 0, rda.getAppointmentSchedule("MTLP2046").length);
+            String[] appointmentSchedule1 = rda.getAppointmentSchedule("MTLP2046");
+            assertTrue(testDetail.init("Patient MTL2046 has no appointments"), true, appointmentSchedule1.length == 0 || (appointmentSchedule1.length == 2 && appointmentSchedule1[0].equals("No") && appointmentSchedule1[1].equals("Replica3")));
             assertTrue(testDetail.init("Successfully booked Dental appointment ID MTLE100222 for Patient MTL2046"), true, rda.bookAppointment("MTLP2046", "MTLE100222", "Dental").contains("success"));
-            assertTrue(testDetail.init("Patient MTL2046 has 1 appointment"), 1, rda.getAppointmentSchedule("MTLP2046").length);
+            String[] appointmentSchedule2 = rda.getAppointmentSchedule("MTLP2046");
+            assertTrue(testDetail.init("Patient MTL2046 has 1 appointment"), 1, appointmentSchedule2.length == 2 || (appointmentSchedule2.length == 2 && appointmentSchedule2[0].equals("Yes") && appointmentSchedule2[1].equals("Replica3")));
             assertFalse(testDetail.init("Cannot book same Dental appointment ID MTLE100222 for Patient MTL2046"), true, rda.bookAppointment("MTLP2046", "MTLE100222", "Dental").contains("success"));
 
             //Software failure simulation

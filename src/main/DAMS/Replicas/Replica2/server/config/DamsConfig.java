@@ -2,7 +2,6 @@ package DAMS.Replicas.Replica2.server.config;
 
 public final class DamsConfig {
     public static final String SERVER_HOST = "SERVER_HOST";
-    public static final String SERVER_ENDPOINT = "SERVER_ENDPOINT";
     public static final String LOG_FOLDER = "LOG_FOLDER";
 
     public static final String MAIN_UDP_SERVER_PORT = "MAIN_UDP_SERVER_PORT";
