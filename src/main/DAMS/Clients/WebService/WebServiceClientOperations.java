@@ -737,7 +737,9 @@ public class WebServiceClientOperations implements ClientLookup {
         System.out.println("");
         System.out.println("Fetching... please wait!");
         System.out.println("");
+       // System.out.println(rda.listAppointmentAvailability(appointmentType).getReplica()==1);
         if (rda.listAppointmentAvailability(appointmentType).getReplica() != 3) {
+          //  System.out.println("yes");
             try {
                 appointments = rda.listAppointmentAvailability(appointmentType).getData();
             } catch (Exception e) {
@@ -775,7 +777,8 @@ public class WebServiceClientOperations implements ClientLookup {
                 System.out.println("");
 
             }
-        } else {
+        } else if(rda.listAppointmentAvailability(appointmentType).getReplica() == 3) {
+            System.out.println("No");
             try {
                 message = rda.listAppointmentAvailability(appointmentType).getData().get("Data");
             } catch (Exception e) {

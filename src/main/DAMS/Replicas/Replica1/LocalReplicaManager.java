@@ -183,6 +183,9 @@ public class LocalReplicaManager implements Runnable {
         killServerOnPort(6821);
         killServerOnPort(6822);
         killServerOnPort(6823);
+        killServerOnPort(6831);
+        killServerOnPort(6832);
+        killServerOnPort(6833);
 
     }
 

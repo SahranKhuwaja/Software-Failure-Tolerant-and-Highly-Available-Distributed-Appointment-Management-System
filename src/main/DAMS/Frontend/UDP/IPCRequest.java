@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class IPCRequest {
+public class IPCRequest extends Thread {
 
     DatagramSocket datagramSocket;
     ByteArrayOutputStream byteArrayOutputStream;
@@ -25,6 +25,7 @@ public class IPCRequest {
 
     public IPCRequest(){
         responseQueue = new ArrayList<Response>();
+        this.start();
     }
 
     public Response sendRequestToSequencerAndGetReplyFromFE(Request request) {
@@ -35,7 +36,7 @@ public class IPCRequest {
             InetSocketAddress ip = new InetSocketAddress(HOST_IP,PORT);
             DatagramPacket requestPacket = new DatagramPacket(message, message.length, ip);
             datagramSocket.send(requestPacket);
-            datagramSocket = new DatagramSocket(6802);
+           // datagramSocket = new DatagramSocket(6802);
             datagramSocket.setSoTimeout(1000);
             while (true) {
                 try{

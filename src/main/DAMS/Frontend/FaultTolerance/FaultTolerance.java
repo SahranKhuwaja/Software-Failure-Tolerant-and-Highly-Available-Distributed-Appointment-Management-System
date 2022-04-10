@@ -29,9 +29,6 @@ public class FaultTolerance {
         if(responseQueue.size()==1){
             return replicaResponse;
         }
-        for(Response a : responseQueue){
-            System.out.println(a.getReplica());
-        }
         responseQueue.stream()
                 .forEach(e->{
                     List<Boolean> defectedReplicas = responseQueue.stream()

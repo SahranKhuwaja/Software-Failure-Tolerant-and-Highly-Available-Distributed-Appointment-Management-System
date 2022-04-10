@@ -50,8 +50,8 @@ public class IPCReplyToFE extends Thread implements UDPReplyToFE {
                 Request requestFromFE = this.decodeMessage(request);
                 Response wrappedMessage = this.wrapMessage(requestFromFE);
                 byte[] replyBytes = this.encodeToByteArray(wrappedMessage);
-                InetSocketAddress ip = new InetSocketAddress(HOST_IP, PORT);
-                DatagramPacket reply = new DatagramPacket(replyBytes, replyBytes.length, ip);
+              //  InetSocketAddress ip = new InetSocketAddress(HOST_IP, PORT);
+                DatagramPacket reply = new DatagramPacket(replyBytes, replyBytes.length, requestFromFE.getFE_IP(), requestFromFE.getFE_PORT());
                 datagramSocket.send(reply);
             }
         } catch (SocketException e) {
