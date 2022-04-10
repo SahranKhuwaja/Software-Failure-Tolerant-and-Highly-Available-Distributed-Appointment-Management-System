@@ -1,8 +1,10 @@
 package DAMS.Replicas.Replica2;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
@@ -52,10 +54,7 @@ public class LocalReplicaManager implements Runnable {
         Runnable listenRecoverRequest = () -> {
             while (true) {
                 HashMap<String, HashMap<String, AppointmentSlot>>[] data = receiveRecoverRequest();
-                if (serverThread.isAlive()) {
-                    System.out.println("Replica 2 kill servers");
-                    serverThread.interrupt();
-                }
+                killServers();
                 startServers();
 //                loadDataToServers(data);
             }
@@ -146,6 +145,34 @@ public class LocalReplicaManager implements Runnable {
         this.serverThread = new Thread(() -> DamsPublisher.main(new String[]{}));
     }
 
+    private void killServerOnPort(int port) {
+        try {
+            Runtime rt = Runtime.getRuntime();
+            Process proc = rt.exec("netstat -anv | grep " + port);
+            System.out.println(proc.pid());
+
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(proc.getInputStream()));
+            String s = null;
+            if ((s = stdInput.readLine()) != null) {
+                String[] tokens = s.split("\\s");
+                String pid = tokens[7];
+                System.out.println(pid);
+                rt.exec("kill -9 " + pid);
+            }
+        } catch (Exception e) {
+            System.out.println("Something Went wrong with server");
+        }
+
+    }
+
+    private void killServers() {
+        System.out.println("Replica 2 kill all servers");
+        killServerOnPort(6821);
+        killServerOnPort(6822);
+        killServerOnPort(6823);
+
+    }
 
     public static void main(String[] args) {
         new LocalReplicaManager().run();

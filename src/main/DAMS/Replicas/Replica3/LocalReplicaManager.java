@@ -1,8 +1,10 @@
 package DAMS.Replicas.Replica3;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
@@ -57,18 +59,7 @@ public class LocalReplicaManager implements Runnable {
         Runnable listenRecoverRequest = () -> {
             while (true) {
                 HashMap<String, HashMap<String, AppointmentSlot>>[] data = receiveRecoverRequest();
-                if (this.mtlThread.isAlive()) {
-                    System.out.println("Replica 3 kill MTL server");
-                    this.mtlThread.interrupt();
-                }
-                if (this.queThread.isAlive()) {
-                    System.out.println("Replica 3 kill QUE server");
-                    this.queThread.interrupt();
-                }
-                if (this.sheThread.isAlive()) {
-                    System.out.println("Replica 3 kill SHE server");
-                    this.sheThread.interrupt();
-                }
+                killServers();
                 startServers();
 //                loadDataToServers(data);
             }
@@ -170,6 +161,36 @@ public class LocalReplicaManager implements Runnable {
         this.queThread.start();
         System.out.println("Replica 3 start SHE server");
         this.sheThread.start();
+
+    }
+
+    private void killServerOnPort(int port) {
+        try {
+            Runtime rt = Runtime.getRuntime();
+            Process proc = rt.exec("cmd /c netstat -ano | findstr :" + port);
+            System.out.println(proc.pid());
+
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(proc.getInputStream()));
+            String s = null;
+            if ((s = stdInput.readLine()) != null) {
+                int index = s.lastIndexOf(" ");
+                String sc = s.substring(index, s.length());
+                System.out.println(sc);
+                rt.exec("cmd /c Taskkill /PID" + sc + " /F");
+            }
+//            JOptionPane.showMessageDialog(null, "Server Stopped");
+        } catch (Exception e) {
+            System.out.println("Something Went wrong with server");
+        }
+    }
+
+
+    private void killServers() {
+        System.out.println("Replica 3 kill all servers");
+        killServerOnPort(6821);
+        killServerOnPort(6822);
+        killServerOnPort(6823);
 
     }
 

@@ -60,7 +60,6 @@ public class ReplicaManager implements Runnable {
         Runnable listenNotification = () -> {
             while (true) {
                 Notification notification = this.receiveNotification();
-                System.out.println("RM " + (thisReplicaId + 1) + " Received failure notification");
                 byte[] notificationBytes = toByteArray(notification);
                 String failType = notification.getFailureType();
                 List<Integer> failedReplicas = notification.getFailedReplicas();
@@ -142,12 +141,11 @@ public class ReplicaManager implements Runnable {
     }
 
     private Notification receiveNotification() {
-        byte[] buf = new byte[32767];
+        byte[] buf = new byte[1023];
         try {
             DatagramPacket udpPacket = new DatagramPacket(buf, buf.length);
             System.out.println("RM " + (thisReplicaId + 1) + " Waiting for failure notification");
             notificationSocket.receive(udpPacket);
-            System.out.println("RM " + (thisReplicaId + 1) + " received failure notification");
             byte[] notificationPayload = udpPacket.getData();
             ObjectInputStream objectInputStream =
                     new ObjectInputStream(new ByteArrayInputStream(notificationPayload));
@@ -205,7 +203,7 @@ public class ReplicaManager implements Runnable {
                     new InetSocketAddress(localRmIps[replica - 1], localRmPorts[replica - 1]));
             udpSocket.send(requestPacket);
             DatagramPacket responsePacket = new DatagramPacket(buf, buf.length);
-            udpSocket.receive(responsePacket);
+//            udpSocket.receive(responsePacket);
             return responsePacket.getData();
 
         } catch (IOException e) {

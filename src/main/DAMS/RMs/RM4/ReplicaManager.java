@@ -146,7 +146,6 @@ public class ReplicaManager implements Runnable {
             DatagramPacket udpPacket = new DatagramPacket(buf, buf.length);
             System.out.println("RM " + (thisReplicaId + 1) + " Waiting for failure notification");
             notificationSocket.receive(udpPacket);
-            System.out.println("RM " + (thisReplicaId + 1) + " received failure notification");
             byte[] notificationPayload = udpPacket.getData();
             ObjectInputStream objectInputStream =
                     new ObjectInputStream(new ByteArrayInputStream(notificationPayload));
@@ -215,7 +214,7 @@ public class ReplicaManager implements Runnable {
                     new InetSocketAddress(localRmIps[replica - 1], localRmPorts[replica - 1]));
             udpSocket.send(requestPacket);
             DatagramPacket responsePacket = new DatagramPacket(buf, buf.length);
-            udpSocket.receive(responsePacket);
+//            udpSocket.receive(responsePacket);
             return responsePacket.getData();
 
         } catch (IOException e) {

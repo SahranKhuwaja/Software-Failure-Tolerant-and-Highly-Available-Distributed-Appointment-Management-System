@@ -207,7 +207,7 @@ public class ReplicaManager implements Runnable {
                     new InetSocketAddress(localRmIps[replica - 1], localRmPorts[replica - 1]));
             udpSocket.send(requestPacket);
             DatagramPacket responsePacket = new DatagramPacket(buf, buf.length);
-            udpSocket.receive(responsePacket);
+//            udpSocket.receive(responsePacket);
             return responsePacket.getData();
 
         } catch (IOException e) {

@@ -1,8 +1,10 @@
 package DAMS.Replicas.Replica1;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
@@ -57,18 +59,7 @@ public class LocalReplicaManager implements Runnable {
         Runnable listenRecoverRequest = () -> {
             while (true) {
                 HashMap<String, HashMap<String, AppointmentSlot>>[] data = receiveRecoverRequest();
-                if (this.mtlThread.isAlive()) {
-                    System.out.println("Replica 1 kill MTL server");
-                    this.mtlThread.interrupt();
-                }
-                if (this.queThread.isAlive()) {
-                    System.out.println("Replica 1 kill QUE server");
-                    this.queThread.interrupt();
-                }
-                if (this.sheThread.isAlive()) {
-                    System.out.println("Replica 1 kill SHE server");
-                    this.sheThread.interrupt();
-                }
+                killServers();
                 startServers();
 //                loadDataToServers(data);
             }
@@ -167,6 +158,34 @@ public class LocalReplicaManager implements Runnable {
         this.sheThread.start();
     }
 
+    private void killServerOnPort(int port) {
+        try {
+            Runtime rt = Runtime.getRuntime();
+            Process proc = rt.exec("netstat -anv | grep " + port);
+            System.out.println(proc.pid());
+
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(proc.getInputStream()));
+            String s = null;
+            if ((s = stdInput.readLine()) != null) {
+                String[] tokens = s.split("\\s");
+                String pid = tokens[7];
+                System.out.println(pid);
+                rt.exec("kill -9 " + pid);
+            }
+        } catch (Exception e) {
+            System.out.println("Something Went wrong with server");
+        }
+
+    }
+
+    private void killServers() {
+        System.out.println("Replica 1 kill all servers");
+        killServerOnPort(6821);
+        killServerOnPort(6822);
+        killServerOnPort(6823);
+
+    }
 
     public static void main(String[] args) {
         new LocalReplicaManager().run();
