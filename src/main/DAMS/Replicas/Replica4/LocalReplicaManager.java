@@ -77,8 +77,6 @@ public class LocalReplicaManager implements Runnable {
             DatagramPacket udpPacket = new DatagramPacket(buf, buf.length);
             recoverSocket.receive(udpPacket);
             byte[] data = udpPacket.getData();
-            ObjectInputStream objectInputStream =
-                    new ObjectInputStream(new ByteArrayInputStream(data));
             return null;
 //            return (HashMap<String, HashMap<String, AppointmentSlot>>[]) objectInputStream.readObject();
         } catch (IOException e) {
