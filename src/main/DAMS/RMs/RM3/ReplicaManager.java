@@ -71,6 +71,7 @@ public class ReplicaManager implements Runnable {
                     }
                 }
                 if ("Crash Failure".equals(failType)) {
+                    System.out.println("RM " + (thisReplicaId + 1) + " received crash failure notification");
                     // send data to local rm
                     byte[] data = getDataFromReplica(goodReplica);
                     DatagramPacket dataPacket = new DatagramPacket(
@@ -83,8 +84,9 @@ public class ReplicaManager implements Runnable {
                         e.printStackTrace();
                     }
                 } else if ("Software Failure".equals(failType)) {
+                    System.out.println("RM " + (thisReplicaId + 1) + " received software failure notification");
                     errorCounter++;
-                    if (errorCounter > 2) {
+                    if (errorCounter > 1) {
                         errorCounter = 0;
                         byte[] data = getDataFromReplica(goodReplica);
                         // send data to local rm

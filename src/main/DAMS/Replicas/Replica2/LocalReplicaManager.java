@@ -18,7 +18,7 @@ import DAMS.Replicas.Replica1.AppointmentSlots.AppointmentSlot;
  */
 public class LocalReplicaManager implements Runnable {
 
-    private final int recoverRequestPort = 6921;
+    private final int recoverRequestPort = 6922;
     private DatagramSocket recoverSocket;
 
     private final int getAllDataRequestPort = 6931;

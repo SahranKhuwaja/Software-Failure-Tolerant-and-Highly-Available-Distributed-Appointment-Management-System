@@ -21,7 +21,7 @@ import DAMS.Replicas.Replica3.Binding.StartSHE;
  */
 public class LocalReplicaManager implements Runnable {
 
-    private final int recoverRequestPort = 6921;
+    private final int recoverRequestPort = 6923;
     private DatagramSocket recoverSocket;
 
     private final int getAllDataRequestPort = 6931;

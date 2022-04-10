@@ -60,7 +60,6 @@ public class ReplicaManager implements Runnable {
         Runnable listenNotification = () -> {
             while (true) {
                 Notification notification = this.receiveNotification();
-                System.out.println("RM " + (thisReplicaId + 1) + " Received failure notification");
                 byte[] notificationBytes = toByteArray(notification);
                 String failType = notification.getFailureType();
                 List<Integer> failedReplicas = notification.getFailedReplicas();
@@ -72,6 +71,7 @@ public class ReplicaManager implements Runnable {
                 }
                 if ("Crash Failure".equals(failType)) {
                     // send data to local rm
+                    System.out.println("RM " + (thisReplicaId + 1) + " received crash failure notification");
                     byte[] data = getDataFromReplica(goodReplica);
                     DatagramPacket dataPacket = new DatagramPacket(
                             data,
@@ -83,8 +83,9 @@ public class ReplicaManager implements Runnable {
                         e.printStackTrace();
                     }
                 } else if ("Software Failure".equals(failType)) {
+                    System.out.println("RM " + (thisReplicaId + 1) + " received software failure notification");
                     errorCounter++;
-                    if (errorCounter > 2) {
+                    if (errorCounter > 1) {
                         errorCounter = 0;
                         byte[] data = getDataFromReplica(goodReplica);
                         // send data to local rm
